@@ -1,0 +1,33 @@
+{
+  "name": "MuList",
+  "version": "0.1.0",
+  "description": "lightweight node server to make a mailing list",
+  "keywords": [
+    "Node.js",
+    "newsletter",
+    "API",
+    "mailing",
+    "list",
+    "server"
+  ],
+  "author": {
+    "name": "Kimi",
+    "email": "kim.himitsu@gmail.com",
+    "url": "http://kimihub.github.io/"
+  },
+  "homepage": "http://opentoolbox.github.io/mulist",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opentoolbox/mulist"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "devDependencies": {
+    "request": "2.57.x"
+  },
+  "main": "server.js",
+  "scripts": {
+    "test": "node test/server.test.js"
+  }
+}
