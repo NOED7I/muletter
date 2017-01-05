@@ -1,5 +1,5 @@
 {
-  "name": "MuList",
+  "name": "mulist-http",
   "version": "0.1.0",
   "description": "lightweight node server to make a mailing list",
   "keywords": [
@@ -12,13 +12,13 @@
   ],
   "author": {
     "name": "Kimi",
-    "email": "kim.himitsu@gmail.com",
-    "url": "http://kimihub.github.io/"
+    "url": "https://github.com/kimihub"
   },
-  "homepage": "http://opentoolbox.github.io/mulist",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/kimihub/mulist-http",
   "repository": {
     "type": "git",
-    "url": "https://github.com/opentoolbox/mulist"
+    "url": "https://github.com/kimihub/mulist-http"
   },
   "engines": {
     "node": ">=0.10"
