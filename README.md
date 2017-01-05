@@ -1,13 +1,13 @@
-# µList
+#   µList HTTP
 
-**µList** or **MuList** is a lightweight node server to make a mailing list
+**MuList HTTP** is a lightweight node server to make a mailing list
 
 
 ## Clone, Config, Deploy
 
 1) Clone or download this repo
 
-2) Configure your **host**, **port** and **key** in config.json
+2) Configure your **host**, **port** and **key** in config.js
 
 3) Deploy all files on OpenShift, Heroku, AWS, your own server...
 
