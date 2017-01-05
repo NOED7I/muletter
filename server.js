@@ -1,11 +1,10 @@
 #!/bin/env node
 
-var http = require('http'),
-config = require('./config'),
+var config = require('./config'),
 errors = require('./errors'),
 router = require('./router');
 
-http.createServer(function handleRequest(req, res) {
+function handleRequest(req, res) {
 
   // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -44,8 +43,28 @@ http.createServer(function handleRequest(req, res) {
 
   });
 
-}).listen(config.port, config.host, function() {
+}
+
+function logServer() {
 
   console.log('HTTP(S) Server is running on : ' + config.host + ':' + config.port);
 
-});
+}
+
+if (config.https) {
+
+  var https = require('https'),
+  fs = require('fs');
+  https.createServer({
+    key: fs.readFileSync('certificates/key.pem', 'utf-8'),
+    cert: fs.readFileSync('certificates/server.crt', 'utf-8')
+  }, handleRequest).listen(config.port, config.host, logServer);
+
+}
+
+else {
+
+  var http = require('http');
+  http.createServer(handleRequest).listen(config.port, config.host, logServer);
+
+}
