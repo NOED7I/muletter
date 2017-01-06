@@ -1,12 +1,19 @@
 var request = require('request'),
-config = require('../config'),
 log = console.log,
-serverUrl = 'http://'+config.host+':'+config.port;
+serverUrl = 'http://127.0.0.1';
 
+if (!process.env.PORT) {
+  process.env.PORT = 8080;
+}
+
+serverUrl = serverUrl + ':' + process.env.PORT;
 
 // Server
 log('> server.js');
 require('../server');
+
+// Load config
+var config = require('../config');
 
 request.get({
     url: serverUrl + '/'
