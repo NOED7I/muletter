@@ -7,7 +7,17 @@
 
 1) Clone or download this repo
 
-2) Configure your **host**, **port** and **key** in config.js
+2) Edit config.js :
+
+`https (false | true)` is required. `false` is usually the best choice because most of web hosting / PaaS already provide https. If `true`, the app will automatically generate certificates with `openssl` command of the operating system.
+
+`port (80 | 443 | ...)` is required and must be an integer. In development you can define it directly with the command `PORT=8080 npm start`. Here are some examples but every web hosting / PaaS have their specific port :
+  - Openshift : `process.env.OPENSHIFT_NODEJS_PORT`
+  - Heroku : `process.env.PORT`
+
+`host` is optionnal but for some web hosting / PaaS an IP is required like Openshift (`process.env.OPENSHIFT_NODEJS_IP`). You can provide an empty host or simply comment it.
+
+`key` is optionnal but it should be defined to secure admin requests.
 
 3) Deploy all files on OpenShift, Heroku, AWS, your own server...
 
