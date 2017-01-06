@@ -1,6 +1,6 @@
 {
   "name": "mulist-http",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "lightweight node server to make a mailing list",
   "keywords": [
     "Node.js",
@@ -24,7 +24,7 @@
     "node": ">=0.10"
   },
   "devDependencies": {
-    "request": "2.57.x"
+    "request": "2.79.x"
   },
   "main": "server.js",
   "scripts": {
