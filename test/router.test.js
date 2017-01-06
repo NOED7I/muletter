@@ -1,26 +1,42 @@
-var Router = require('../router'), log = console.log;
+var Router = require('../router');
 
-module.exports = function (){
+console.log('> Test router.js');
 
-  log('> Fake public url : /logposts');
-  Router({url: '/logposts'}, 1, function(data) {
-    log(data);
+module.exports.task = function(test, cb) {
+  Router(test.req, test.auth, function(data) {
+    var output = {log: test.title, res: JSON.stringify(data)};
+    if (data.errors && !test.should || !data.errors && test.should) {
+      cb(null, output);
+    }
+    else {
+      cb(output);
+    }
   });
-
-  log('> Unsigned url : /export');
-  Router({url: '/export'}, 0, function(data) {
-    log(data);
-  });
-
-  log('> Signed url : /export');
-  var req = {url: '/export'};
-  Router(req, 1, function(data) {
-    log(data);
-  });
-
-  log('> Fake signed url : /delete');
-  Router({url: '/delete', 1, function(data) {
-    log(data);
-  });
-
 }
+
+module.exports.tests = [
+  {
+    title: 'Fake public url : /logposts',
+    should: false,
+    auth: 1,
+    req: {url: '/logposts'}
+  },
+  {
+    title: 'Unsigned url : /export',
+    should: false,
+    auth: 0,
+    req: {url: '/export'},
+  },
+  {
+    title: 'Signed url : /export',
+    should: true,
+    auth: 1,
+    req: {url: '/export'}
+  },
+  {
+    title: 'Fake signed url : /delete',
+    should: false,
+    auth: 1,
+    req: {url: '/delete'}
+  } 
+]

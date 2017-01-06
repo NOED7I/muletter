@@ -24,11 +24,12 @@
     "node": ">=0.10"
   },
   "devDependencies": {
+    "async": "2.1.x",
     "request": "2.79.x"
   },
   "main": "server.js",
   "scripts": {
     "prestart": "node ssl.js",
-    "test": "node test/server.test.js"
+    "test": "node test router app"
   }
 }
