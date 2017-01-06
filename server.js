@@ -4,6 +4,11 @@ var config = require('./config'),
 errors = require('./errors'),
 router = require('./router');
 
+// port required
+if (!config.port || isNaN(config.port)) {
+  throw 'a `port` must be specified and should be an interger';
+}
+
 function handleRequest(req, res) {
 
   // CORS
@@ -47,7 +52,7 @@ function handleRequest(req, res) {
 
 function logServer() {
 
-  console.log('HTTP(S) Server is running on : ' + config.host + ':' + config.port);
+  console.log('Listening on port', config.port);
 
 }
 
@@ -58,13 +63,13 @@ if (config.https) {
   https.createServer({
     key: fs.readFileSync('certificates/key.pem', 'utf-8'),
     cert: fs.readFileSync('certificates/server.crt', 'utf-8')
-  }, handleRequest).listen(config.port, config.host, logServer);
+  }, handleRequest).listen(config.port, config.host? config.host:false, logServer);
 
 }
 
 else {
 
   var http = require('http');
-  http.createServer(handleRequest).listen(config.port, config.host, logServer);
+  http.createServer(handleRequest).listen(config.port, config.host? config.host:false, logServer);
 
 }
