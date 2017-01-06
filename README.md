@@ -1,7 +1,8 @@
-#   µList HTTP
+#   µList HTTP 
 
 **MuList HTTP** is a lightweight node server to make a mailing list
 
+[![Build Status](https://travis-ci.org/kimihub/mulist-http.svg?branch=master)](https://travis-ci.org/kimihub/mulist-http)
 
 ## Clone, Config, Deploy
 
