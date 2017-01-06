@@ -6,7 +6,8 @@ router = require('./router');
 
 // port required
 if (!config.port || isNaN(config.port)) {
-  throw 'a `port` must be specified and should be an interger';
+  console.error('\x1b[91m', '[error] port is required', '\x1b[0m');
+  process.exit(1);
 }
 
 function handleRequest(req, res) {

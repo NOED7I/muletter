@@ -17,7 +17,7 @@ try {
   initSchema(JSON.parse(fs.readFileSync('./data.json')));
 }
 catch (ex) {
-  console.log('[Exception]', ex);
+  console.log('> First start: create data.json ...', '\n');
   initSchema({});
   writeSync();
 }
