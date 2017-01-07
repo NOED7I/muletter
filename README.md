@@ -4,24 +4,28 @@
 
 [![Build Status](https://travis-ci.org/kimihub/mulist-http.svg?branch=master)](https://travis-ci.org/kimihub/mulist-http)
 
-## Clone, Config, Deploy
+## Server requirements
 
-1) Clone or download this repo
+You need a http web server or a cloud hosting account to deploy MuList HTTP.
 
-2) Edit config.js :
+Here are the minimal requirements of the server :
 
-`https (false | true)` is required. `false` is usually the best choice because most of web hosting / PaaS already provide https. If `true`, the app will automatically generate certificates with `openssl` command of the operating system.
+- **Node.js >= 0.10** build with crypto module
+- **https** support
+- **openssl** installed if you've chosen to handle https with Node.js
 
-`port (80 | 443 | ...)` is required and must be an integer. In development you can define it directly with the command `PORT=8080 npm start`. Here are some examples but every web hosting / PaaS have their specific port :
-  - Openshift : `process.env.OPENSHIFT_NODEJS_PORT`
-  - Heroku : `process.env.PORT`
+## Install
 
-`host` is optionnal but for some web hosting / PaaS an IP is required like Openshift (`process.env.OPENSHIFT_NODEJS_IP`). You can provide an empty host or simply comment it.
+Follow the steps in : https://github.com/kimihub/mulist-http/blob/master/INSTALL.md
 
-`key` is optionnal but it should be defined to secure admin requests.
+## MuList CLI and access key
 
-3) Deploy all files on OpenShift, Heroku, AWS, your own server...
+You need to install **MuList CLI** on your computer to manage MuList HTTP : https://github.com/kimihub/mulist-cli
 
+The **access key** is automatically generated with `crypto` at each start of the app and printed on the app logs like bellow :
+
+    > Access key : <hash>
+    > Listening on port <port>
 
 ## E-mail submitter form example
 
@@ -62,123 +66,4 @@
 
 ## API
 
-### Add email
-
-**Request**
-
-    POST  /add
-
-**Parameters**
-
-    {
-      "email": "user@domail.com"
-    }
-
-**Return**
-
-    {
-      "data": "user@domail.com"
-    }
-
-
-**Errors**
-
-**409** already exists
-
-
-### Remove email
-
-**Request**
-
-    POST  /remove
-
-**Parameters**
-
-    {
-      "key": "yourKey",
-      "email": "user@domail.com"
-    }
-
-**Return**
-
-    {
-      "data": "user@domail.com"
-    }
-
-
-**Errors**
-
-**409** does not exist
-
-
-### Import mailing list
-
-It will remove all emails older than the last export date or than the cursor parameter. Set cursor to **0** to cancel the last export.
-
-**Request**
-
-      POST /import
-
-**Parameters**
-
-    {
-      "key": "yourKey",
-      "cursor": "2", // not required
-      "data":  "kim@gmail.com\nsam@outlook.com\nseif785@yahoo.com\n..."
-    }
-
-**Return**
-
-    {
-      "data":  "kim@gmail.com\nsam@outlook.com\nseif785@yahoo.com\n..."
-    }
-
-**Errors**
-
-**401** Unauthorized
-
-
-### Export mailing list
-
-**Request**
-
-      POST /export
-
-**Parameters**
-
-    {
-      "key": "yourKey"
-    }
-
-**Return**
-
-    {
-      "data":  "kim@gmail.com\nsam@outlook.com\nseif785@yahoo.com\n..."
-    }
-
-**Errors**
-
-**401** Unauthorized
-
-
-### Empty mailing list
-
-**Request**
-
-      POST /empty
-
-**Parameters**
-
-    {
-      "key": "yourKey"
-    }
-
-**Return**
-
-    {
-      "data":  ""
-    }
-
-**Errors**
-
-**401** Unauthorized
+https://github.com/kimihub/mulist-http/blob/master/docs/api.md
