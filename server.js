@@ -2,12 +2,38 @@
 
 var config = require('./config'),
 errors = require('./errors'),
-router = require('./router');
+router = require('./router'),
+crypto;
+
+String.prototype.err = function() {
+  return '\x1b[38;5;01m[ERR] ' + this + '\x1b[0m';
+};
 
 // port required
+if (process.env.PORT) {
+  config.port = process.env.PORT;
+}
+
 if (!config.port || isNaN(config.port)) {
-  console.error('\x1b[91m', '[error] port is required', '\x1b[0m');
+  console.error('port is required'.err());
   process.exit(1);
+}
+
+if (!config.key) {
+
+  // crypto required
+  try {
+    crypto = require('crypto');
+  } catch (Exception) {
+    console.log('[Exception]', Exception);
+    console.error('crypto support is required :'.err(), 'this Node.js build does not include support for the crypto module');
+    process.exit(1);
+  }
+
+  // generate an access key
+  config.key = crypto.randomBytes(20).toString('hex');
+  console.log('> Access key:', config.key);
+
 }
 
 function handleRequest(req, res) {
@@ -53,7 +79,7 @@ function handleRequest(req, res) {
 
 function logServer() {
 
-  console.log('Listening on port', config.port);
+  console.log('> Listening on port:', config.port);
 
 }
 
