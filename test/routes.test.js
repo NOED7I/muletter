@@ -1,12 +1,14 @@
-var routes = require('../routes'), errors = require('../errors'), fs = require('fs'), path = require('path');
+'use strict';
+
+const routes = require('../routes'), errors = require('../errors'), fs = require('fs'), path = require('path');
 
 console.log('> Test routes.js');
 
 fs.unlink(path.resolve(__dirname, '../data.json'));
 
-module.exports.task = function(test, cb) {
-  routes[test.route](test.body, test.auth, function(data) {
-    var output = {req: '/' + test.route + ' ' + test.txt, res: JSON.stringify(data)};
+module.exports.task = (test, cb) => {
+  routes[test.route](test.body, test.auth, data => {
+    var output = {req: `/ ${test.route} ${test.txt}`, res: JSON.stringify(data)};
 
     if (data.data && (data.data != test.should.data) || data.code && (data.code != test.should.code && data.message != test.should.message)) {
       output.err = true;

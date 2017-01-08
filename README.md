@@ -10,7 +10,7 @@ You need a http web server or a cloud hosting account to deploy MuList HTTP.
 
 Here are the minimal requirements of the server :
 
-- **Node.js >= 0.10** build with crypto module
+- **Node.js >= 4** build with crypto module
 - **https** support
 - **openssl** installed if you've chosen to handle https with Node.js
 

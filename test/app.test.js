@@ -1,20 +1,19 @@
-var http = require('http'),
-querystring = require('querystring'),
-config;
+'use strict';
+
+const querystring = require('querystring');
+
+let config = require('../config');
 
 console.log('> Run server.js and test all the app');
-if (!process.env.PORT) {
-  process.env.PORT = 8080;
-}
-require('../server');
-config = require('../config');
 
-module.exports.task = function(test, cb) {
-  var postData = querystring.stringify(test.form? test.form:{}),
-  log = test.method + ' ' + test.route + ' ' + test.txt,
+require('../server');
+
+module.exports.task = (test, cb) => {
+  let postData = querystring.stringify(test.form? test.form:{}),
+  log = `${test.method} ${test.route} ${test.txt}`,
   options = {
     hostname: '127.0.0.1',
-    port: process.env.PORT,
+    port: config.port,
     path: test.route,
     method: test.method,
     headers: {
@@ -22,14 +21,14 @@ module.exports.task = function(test, cb) {
       'Content-Length': Buffer.byteLength(postData)
     }
   },
-  req = http.request(options, function(res) {
+  req = require('http').request(options, res => {
     res.setEncoding('utf8');
-     res.on('data', function(chunk) {
+     res.on('data', chunk => {
        cb(null, {err: false, req: log, res: chunk});
     });
   });
 
-  req.on('error', function(e) {
+  req.on('error', e => {
     cb(null, {err: true, req: log, res: e});
   });
 

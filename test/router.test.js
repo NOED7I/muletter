@@ -1,10 +1,12 @@
-var Router = require('../router');
+'use strict';
+
+const Router = require('../router');
 
 console.log('> Test router.js');
 
-module.exports.task = function(test, cb) {
-  Router(test.req, test.auth, function(data) {
-    var output = {req: test.req.url + ' '+ test.txt, res: JSON.stringify(data)};
+module.exports.task = (test, cb) => {
+  Router(test.req, test.auth, data => {
+    let output = {req: `${test.req.url} ${test.txt}`, res: JSON.stringify(data)};
     if (data.errors && !test.should || !data.errors && test.should) {
       output.err = false;
       cb(null, output);

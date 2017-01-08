@@ -1,19 +1,20 @@
-#!/bin/env node
+'use strict';
 
-var config = require('./config'),
-errors = require('./errors'),
-router = require('./router'),
-crypto;
+const errors = require('./errors'),
+router = require('./router');
+
+let config = require('./config'), crypto;
 
 String.prototype.err = function() {
-  return '\x1b[38;5;01m[ERR] ' + this + '\x1b[0m';
+  return `\x1b[38;5;01m[ERR] ${this} \x1b[0m`;
 };
 
-// port required
+// if env var PORT is used
 if (process.env.PORT) {
   config.port = process.env.PORT;
 }
 
+// port required
 if (!config.port || isNaN(config.port)) {
   console.error('port is required'.err());
   process.exit(1);
@@ -39,33 +40,33 @@ if (!config.key) {
 function handleRequest(req, res) {
 
   // CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
   // REST Methods and JSON
-  res.setHeader("Access-Control-Allow-Methods", "POST");
-  res.setHeader("Content-Type", "application/json");
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Content-Type', 'application/json');
 
   // Get Body Data
-  var buffer = '';
+  let buffer = '';
   req.setEncoding('utf8');
-  req.on('data', function(chunk) {
-    buffer += chunk;
+  req.on('data', chunk => {
+    buffer += chunk
   });
 
-  req.on('end', function() {
+  req.on('end', () => {
 
     // Body Parser : QueryString to Object
     req.body = require('querystring').parse(buffer.trim());
 
     // Authentication
-    var auth = req.body.key == config.key ? true : false;
+    let auth = req.body.key == config.key ? true : false;
 
-    router(req, auth, function (data) {
+    router(req, auth, data => {
 
       // Errors Status Code
       if (typeof data === 'object' && data.errors && data.code) {
-        res.statusCode = errors[data.code];
+        res.statusCode = errors[data.code]
       }
 
       // Send JSON data
@@ -85,18 +86,16 @@ function logServer() {
 
 if (config.https) {
 
-  var https = require('https'),
+  const https = require('https'),
   fs = require('fs');
   https.createServer({
     key: fs.readFileSync('certificates/key.pem', 'utf-8'),
     cert: fs.readFileSync('certificates/server.crt', 'utf-8')
   }, handleRequest).listen(config.port, config.host? config.host:false, logServer);
 
-}
+} else {
 
-else {
-
-  var http = require('http');
+  const http = require('http');
   http.createServer(handleRequest).listen(config.port, config.host? config.host:false, logServer);
 
 }

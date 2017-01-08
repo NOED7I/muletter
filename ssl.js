@@ -1,18 +1,28 @@
-#!/bin/env node
+'use strict';
 
-var config = require('./config');
+let config = require('./config');
 
 if (config.https) {
 
-	var exec = require('child_process').exec,
-	cmd = 'mkdir -p certificates; openssl req -batch -newkey rsa:2048 -new -nodes -keyout certificates/key.pem -out certificates/csr.pem; openssl x509 -req -in certificates/csr.pem -signkey certificates/key.pem -out certificates/server.crt;';
-	exec(cmd, function(error, stdout, stderr) {
-	  if (error) {
-	    console.log('exec error:', error);
-	    return;
+	const exec = require('child_process').exec,
+  error = s => (`\x1b[38;5;01m[ERR] ${s} \x1b[0m`),
+	cmd = `
+    mkdir -p certificates;
+    openssl req -batch -newkey rsa:2048 -new -nodes -keyout certificates/key.pem -out certificates/csr.pem;
+    openssl x509 -req -in certificates/csr.pem -signkey certificates/key.pem -out certificates/server.crt;
+  `;
+
+	exec(cmd, (err, stdout, stderr) => {
+
+    if (err) {
+	    console.error(err);
+      console.error(error('openssl is required'));
+	    process.exit(1);
 	  }
-	  console.log('stdout: ', stdout);
-	  console.log('stderr: ', stderr);
-	});
+
+	  console.log(stdout);
+    console.log(stderr);
+	
+  });
 	
 }
