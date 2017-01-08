@@ -21,7 +21,7 @@ module.exports.task = (test, cb) => {
       'Content-Length': Buffer.byteLength(postData)
     }
   },
-  req = require('http').request(options, res => {
+  req = require(config.https?'https':'http').request(options, res => {
     res.setEncoding('utf8');
      res.on('data', chunk => {
        cb(null, {err: false, req: log, res: chunk});
