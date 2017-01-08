@@ -28,6 +28,8 @@ MuList HTTP is configured to automatically run by on the following list of cloud
 
     rhc app-create mulist nodejs --from-code https://github.com/kimihub/mulist-http
 
+    rhc env set NPM_CONFIG_PRODUCTION="true" -a mulist
+
 ######**App logs**
 
     rhc tail mulist
