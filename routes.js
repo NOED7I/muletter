@@ -81,7 +81,7 @@ module.exports.import = function (req, auth, next) {
     return next(errors.Conflict('data to import is empty'));
   }
 
-  if (req.body.cursor) {
+  if (req.body.cursor !== undefined) {
 
     var newCursor = parseInt(req.body.cursor, 10);
 

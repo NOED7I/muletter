@@ -78,6 +78,8 @@ It will remove all emails older than the last export date or than the cursor par
 
 ### Export mailing list
 
+All emails exported will be removed with the next import.
+
 **Request**
 
       POST /export
