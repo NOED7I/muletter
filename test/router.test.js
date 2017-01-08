@@ -4,37 +4,39 @@ console.log('> Test router.js');
 
 module.exports.task = function(test, cb) {
   Router(test.req, test.auth, function(data) {
-    var output = {log: test.title, res: JSON.stringify(data)};
+    var output = {req: test.req.url + ' '+ test.txt, res: JSON.stringify(data)};
     if (data.errors && !test.should || !data.errors && test.should) {
+      output.err = false;
       cb(null, output);
     }
     else {
-      cb(output);
+      output.err = true;
+      cb(null, output);
     }
   });
 }
 
 module.exports.tests = [
   {
-    title: 'Fake public url : /logposts',
+    txt: 'Fake public url',
     should: false,
     auth: 1,
-    req: {url: '/logposts'}
+    req: {url: '/posts'}
   },
   {
-    title: 'Unsigned url : /export',
+    txt: 'Unsigned url',
     should: false,
     auth: 0,
     req: {url: '/export'},
   },
   {
-    title: 'Signed url : /export',
+    txt: 'Signed url',
     should: true,
     auth: 1,
     req: {url: '/export'}
   },
   {
-    title: 'Fake signed url : /delete',
+    txt: 'Fake signed url',
     should: false,
     auth: 1,
     req: {url: '/delete'}
