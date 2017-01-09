@@ -51,7 +51,7 @@
 
 ### Import mailing list
 
-It will remove all emails older than the last export date or than the cursor parameter. Set cursor to **0** to cancel the last export.
+It will remove all emails older than the last export date or than the cursor parameter. Set cursor to **0** to cancel the last export. **This route should be used only to sync a local mailing list, look at the /edit virtual route bellow**. 
 
 **Request**
 
@@ -78,8 +78,6 @@ It will remove all emails older than the last export date or than the cursor par
 
 ### Export mailing list
 
-All emails exported will be removed with the next import.
-
 **Request**
 
       POST /export
@@ -99,6 +97,17 @@ All emails exported will be removed with the next import.
 **Errors**
 
 **401** Unauthorized
+
+
+### Edit mailing list (virtual route)
+
+This route is the combination of two routes : /export and /import, used in order to sync a local mailing list.
+
+1) Export
+
+2) Edit localy
+
+3) Import local editing with only **key** and **data** as parameters.
 
 
 ### Empty mailing list
