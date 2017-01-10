@@ -18,11 +18,11 @@ Here are the minimal requirements of the server :
 
 Follow the steps in : https://github.com/kimihub/mulist-http/blob/master/INSTALL.md
 
-## MuList CLI and access key
+## Manage app
 
-You need to install **MuList CLI** on your computer to manage MuList HTTP : https://github.com/kimihub/mulist-cli
+To manage the distant app you need to install the CLI **MuList** on your computer : https://github.com/kimihub/mulist
 
-The **access key** is automatically generated with `crypto` at each start of the app and printed on the app logs like bellow :
+You also need an **access key** which is automatically generated with `crypto` at each startup and printed on the app logs like bellow :
 
     > Access key : <hash>
     > Listening on port <port>
