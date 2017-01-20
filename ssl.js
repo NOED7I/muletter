@@ -2,7 +2,7 @@
 
 let config = require('./config');
 
-if (config.https) {
+if (config.https || process.env.HTTPS) {
 
 	const exec = require('child_process').exec,
   error = s => (`\x1b[38;5;01m[ERR] ${s} \x1b[0m`),

@@ -6,6 +6,8 @@ let config = require('../config');
 
 console.log('> Run server.js and test all the app');
 
+config.https = true;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 require('../server');
 
 module.exports.task = (test, cb) => {
