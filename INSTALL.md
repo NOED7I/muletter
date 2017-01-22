@@ -1,6 +1,16 @@
 # Install µList HTTP
 
-## Auto Install
+Three steps : Clone, Config, Deploy
+
+## Clone, Config
+
+First of all, you need to clone or download this repo.
+
+If you want to use the internal E-mail submitter form (for example if CORS is not enabled with your cloud hosting), you must edit `config.js` and define your mailing list title (default `MuList`).
+
+For a dedicated server or a VPS, go to [Avanced configuration](#advanced_config) section.
+
+## Deploy
 
 MuList HTTP is configured to automatically run by on the following list of cloud hosting services.
 
@@ -45,9 +55,7 @@ MuList HTTP is configured to automatically run by on the following list of cloud
 
 ####**Deployment**
 
-    rhc app-create mulist nodejs --from-code https://github.com/kimihub/mulist-http
-
-    rhc env set NPM_CONFIG_PRODUCTION="true" -a mulist
+    rhc app-create mulist nodejs NPM_CONFIG_PRODUCTION="true" --from-code https://github.com/kimihub/mulist-http
 
 ####**App logs**
 
@@ -68,11 +76,7 @@ MuList HTTP is configured to automatically run by on the following list of cloud
 - In your dashboard select your app 
 - More > View logs
 
-## Manual Install : Clone, Config, Deploy
-
-1) Clone or download this repo
-
-2) Edit config.js :
+## <a name="advanced_config"></a> Advanced configuration (config.js)
 
 `port (80 | 443 | ...)` is required and must be an integer. In development you can define it directly with the command `PORT=8080 npm start`.
 
@@ -81,6 +85,3 @@ MuList HTTP is configured to automatically run by on the following list of cloud
 `https (false | true)` is optionnal. `false` or simply not defined is usually the best choice because most of web hosting / PaaS already provide https. If `true`, the app will automatically generate certificates with `openssl` and handle https. Note that openssl must be installed with this option.
 
 `key` is optionnal and should be used only for development purpose. It disables the crypto auto-generation access key.
-
-3) Deploy all files on OpenShift Online, Heroku.. or your own server
-

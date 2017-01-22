@@ -39,14 +39,6 @@ if (!config.key) {
 
 function handleRequest(req, res) {
 
-  // CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
-  // REST Methods and JSON
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Content-Type', 'application/json');
-
   // Get Body Data
   let buffer = '';
   req.setEncoding('utf8');
@@ -63,14 +55,32 @@ function handleRequest(req, res) {
     let auth = req.body.key == config.key ? true : false;
 
     router(req, auth, data => {
+      
+      if (typeof data === 'string') {
 
-      // Errors Status Code
-      if (typeof data === 'object' && data.errors && data.code) {
-        res.statusCode = errors[data.code]
+        // Send Html
+        res.writeHead(200);
+        res.end(data, 'binary');
+
+      } else {
+
+        // CORS
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+        // REST Methods and JSON
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
+        res.setHeader('Content-Type', 'application/json');
+
+        // Errors Status Code
+        if (typeof data === 'object' && data.errors && data.code) {
+          res.statusCode = errors[data.code]
+        }
+
+        // Send JSON data
+        res.end(JSON.stringify(data));
+
       }
-
-      // Send JSON data
-      res.end(JSON.stringify(data));
 
     });
 

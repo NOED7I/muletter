@@ -41,12 +41,12 @@ module.exports.task = (test, cb) => {
 
 exports.tests = [
   {
-    route: '/',
+    route: '/fake',
     txt: 'should return an error',
     method: 'GET',
   },
   {
-    route: '/',
+    route: '/fake',
     txt: 'should return an error',
     method: 'PUT',
   },
