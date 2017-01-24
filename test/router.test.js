@@ -1,8 +1,11 @@
 'use strict';
 
-const Router = require('../router');
+const Router = require('../router'), fs = require('fs');
 
 console.log('> Test router.js');
+
+process.env.datapath = './datatest.json';
+if (fs.existsSync(process.env.datapath)) fs.unlinkSync(process.env.datapath);
 
 module.exports.task = (test, cb) => {
   Router(test.req, test.auth, data => {

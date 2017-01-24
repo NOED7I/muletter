@@ -1,10 +1,13 @@
 'use strict';
 
-const routes = require('../routes'), errors = require('../errors'), fs = require('fs'), path = require('path');
+const errors = require('../errors'), fs = require('fs');
 
 console.log('> Test routes.js');
 
-fs.unlink(path.resolve(__dirname, '../data.json'));
+process.env.datapath = './datatest.json';
+if (fs.existsSync(process.env.datapath)) fs.unlinkSync(process.env.datapath);
+
+const routes = require('../routes');
 
 module.exports.task = (test, cb) => {
   routes[test.route](test.body, test.auth, data => {

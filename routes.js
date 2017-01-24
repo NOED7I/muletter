@@ -12,7 +12,7 @@ initSchema = raw => {
 },
 
 writeFile = () => {
-  fs.writeFile('./data.json', JSON.stringify({cursor: cursor, data: data}), err => {
+  fs.writeFile(process.env.datapath || './data.json', JSON.stringify({cursor: cursor, data: data}), err => {
     if (err) console.error(`Error: ${err}`)
   })
 };
