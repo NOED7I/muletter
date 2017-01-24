@@ -6,7 +6,7 @@ Three steps : Clone, Config, Deploy
 
 First of all, you need to clone or download this repo.
 
-If you want to use the internal E-mail submitter form (for example if CORS is not enabled with your cloud hosting), you must edit `config.js` and define your mailing list title (default `MuList`).
+If you want to use the internal E-mail submitter form (for example if CORS is not enabled with your cloud hosting), you must edit `config.js` or set the environment variable "title" (`process.env.title`) during deployment and define your mailing list title (default to null).
 
 For a dedicated server or a VPS, go to [Avanced configuration](#advanced_config) section.
 

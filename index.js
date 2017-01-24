@@ -5,7 +5,7 @@ const config = require('./config.js');
 module.exports = `<!DOCTYPE html>
 <html>
 <head>
-<title>${config.title? config.title:''}</title>
+<title>${process.env.title || config.title || ''}</title>
 <meta name=robots content=noindex>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width, initial-scale=1.0">
@@ -160,7 +160,7 @@ input[type="submit"] {
 <![endif]-->
 </head>
 <body>
-<h1>${config.title? config.title:''}</h1>
+<h1>${process.env.title || config.title || ''}</h1>
 <form id="form" class=add>
   <input placeholder=Email type=email name=email>
   <input type=submit name=submit value=&nbsp;>
