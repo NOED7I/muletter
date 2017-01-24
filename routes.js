@@ -11,8 +11,10 @@ initSchema = raw => {
   data = raw.data || new Array();
 },
 
-writeSync = () => {
-  fs.writeFileSync('./data.json', JSON.stringify({cursor: cursor, data: data}))
+writeFile = () => {
+  fs.writeFile('./data.json', JSON.stringify({cursor: cursor, data: data}), err => {
+    if (err) console.error(`Error: ${err}`)
+  })
 };
 
 // Open JSON data
@@ -22,7 +24,7 @@ try {
 catch (ex) {
   console.log('> First start: create data.json ...', '\n');
   initSchema({});
-  writeSync();
+  writeFile();
 }
 
 module.exports.add = (req, auth, next) => {
@@ -38,7 +40,7 @@ module.exports.add = (req, auth, next) => {
   }
 
   data.push(email);
-  writeSync();
+  writeFile();
 
   next({data: email});
 
@@ -68,7 +70,7 @@ module.exports.remove = (req, auth, next) => {
   }
 
   data.splice(index, 1);
-  writeSync();
+  writeFile();
 
   next({data: email});
 
@@ -98,7 +100,7 @@ module.exports.import = (req, auth, next) => {
   data = data.slice(cursor, data.length);
   data = data.concat(req.body.data.split('\n'));
   cursor = 0;
-  writeSync();
+  writeFile();
 
   next({data: data.join('\n')});
 
@@ -111,7 +113,7 @@ module.exports.export = (req, auth, next) => {
   }
 
   cursor = data.length;
-  writeSync();
+  writeFile();
 
   next({data: data.join('\n')});
 
@@ -125,7 +127,7 @@ module.exports.empty = (req, auth, next) => {
 
   cursor = 0;
   data = new Array();
-  writeSync();
+  writeFile();
 
   next({data: ''});
 
