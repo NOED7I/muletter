@@ -1,6 +1,6 @@
 {
-  "name": "mulist-http",
-  "version": "0.3.4",
+  "name": "mulist-api",
+  "version": "0.4.0",
   "description": "lightweight node server to make a mailing list",
   "keywords": [
     "Node.js",
@@ -8,17 +8,19 @@
     "API",
     "mailing",
     "list",
-    "server"
+    "server",
+    "ipfs",
+    "http"
   ],
   "author": {
     "name": "Kimi",
     "url": "https://github.com/kimihub"
   },
   "license": "GPL-3.0",
-  "homepage": "https://github.com/kimihub/mulist-http",
+  "homepage": "https://github.com/kimihub/mulist-api",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kimihub/mulist-http"
+    "url": "https://github.com/kimihub/mulist-api"
   },
   "engines": {
     "node": ">=4"

@@ -1,12 +1,12 @@
-#   µList HTTP 
+#   µList API 
 
-**MuList HTTP** is a lightweight node server to make a mailing list
+**MuList API** is a lightweight node server to make a mailing list
 
-[![Build Status](https://travis-ci.org/kimihub/mulist-http.svg?branch=master)](https://travis-ci.org/kimihub/mulist-http)
+[![Build Status](https://travis-ci.org/kimihub/mulist-api.svg?branch=master)](https://travis-ci.org/kimihub/mulist-api)
 
 ## Server requirements
 
-You need a http web server or a cloud hosting account to deploy MuList HTTP.
+You need a http web server or a cloud hosting account to deploy MuList API.
 
 Here are the minimal requirements of the server :
 
@@ -113,4 +113,4 @@ More about CORS (Cross-origin Resource Sharing) : https://en.wikipedia.org/wiki/
 
 ## API
 
-https://github.com/kimihub/mulist-http/blob/master/docs/api.md
+https://github.com/kimihub/mulist-api/blob/master/docs/api.md

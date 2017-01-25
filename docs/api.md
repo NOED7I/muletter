@@ -1,4 +1,4 @@
-# µList HTTP API
+# µList API
 
 ### Add email
 

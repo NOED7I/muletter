@@ -1,4 +1,4 @@
-# Install µList HTTP
+# Install µList API
 
 Three steps : Clone, Config, Deploy
 
@@ -12,7 +12,22 @@ For a dedicated server or a VPS, go to [Avanced configuration](#advanced_config)
 
 ## Deploy
 
-MuList HTTP is configured to automatically run by on the following list of cloud hosting services.
+MuList API is configured to automatically run by on the following list of cloud hosting services.
+
+### **Heroku**
+
+####**Requirements**
+- Heroku account
+- Dropbox account or GitHub account
+
+####**Deployment**
+- In the dashboard create a new app
+- With the Dropbox account method **download** this repository and extract all the files inside of `mulist-api-master` in `Dropbox/Apps/Heroku/[yourAppName]`
+- With the GitHub account method you must **fork** this repository before connecting it
+
+####**App logs**
+- In your dashboard select your app 
+- More > View logs
 
 ### **Openshift Online V3**
 
@@ -24,7 +39,7 @@ MuList HTTP is configured to automatically run by on the following list of cloud
 
 #####**Name App and Git Repository Url**
 
-- Fill **Name** `Name of your choice` and **Git Repository URL** `https://github.com/kimihub/mulist-http`
+- Fill **Name** `Name of your choice` and **Git Repository URL** `https://github.com/kimihub/mulist-api`
 
 #####**Activate https**
 
@@ -55,26 +70,11 @@ MuList HTTP is configured to automatically run by on the following list of cloud
 
 ####**Deployment**
 
-    rhc app-create mulist nodejs NPM_CONFIG_PRODUCTION="true" --from-code https://github.com/kimihub/mulist-http
+    rhc app-create mulist nodejs NPM_CONFIG_PRODUCTION="true" --from-code https://github.com/kimihub/mulist-api
 
 ####**App logs**
 
     rhc tail mulist
-
-### **Heroku**
-
-####**Requirements**
-- Heroku account
-- Dropbox account or GitHub account
-
-####**Deployment**
-- In the dashboard create a new app
-- With the Dropbox account method **download** this repository and extract all the files inside of `mulist-http-master` in `Dropbox/Apps/Heroku/[yourAppName]`
-- With the GitHub account method you must **fork** this repository before connecting it
-
-####**App logs**
-- In your dashboard select your app 
-- More > View logs
 
 ## <a name="advanced_config"></a> Advanced configuration (config.js)
 
