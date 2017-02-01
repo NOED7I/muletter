@@ -9,7 +9,6 @@ console.log('> Run server.js and test all the app');
 process.env.datapath = './datatest.json';
 if (fs.existsSync(process.env.datapath)) fs.unlinkSync(process.env.datapath);
 
-config.https = true;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 require('../server');
 

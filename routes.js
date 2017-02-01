@@ -19,7 +19,7 @@ writeFile = () => {
 
 // Open JSON data
 try {
-  initSchema(JSON.parse(fs.readFileSync('./data.json')))
+  initSchema(JSON.parse(fs.readFileSync(process.env.datapath || './data.json')))
 }
 catch (ex) {
   console.log('> First start: create data.json ...', '\n');
