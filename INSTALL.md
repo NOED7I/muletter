@@ -14,21 +14,6 @@ For a dedicated server or a VPS, go to [Avanced configuration](#advanced_config)
 
 MuList API is configured to automatically run by on the following list of cloud hosting services.
 
-### **Heroku**
-
-####**Requirements**
-- Heroku account
-- Dropbox account or GitHub account
-
-####**Deployment**
-- In the dashboard create a new app
-- With the Dropbox account method **download** this repository and extract all the files inside of `mulist-api-master` in `Dropbox/Apps/Heroku/[yourAppName]`
-- With the GitHub account method you must **fork** this repository before connecting it
-
-####**App logs**
-- In your dashboard select your app 
-- More > View logs
-
 ### **Openshift Online V3**
 
 ####**Requirements**
@@ -62,19 +47,8 @@ MuList API is configured to automatically run by on the following list of cloud 
 - In the console go to the last deployment page of your app
 - Logs tab
 
-### **OpenShift Online V2 (Deprecated)**
-
-####**Requirements**
-- Openshift Online V2 account
-- OpenShift Client tools `rhc`: https://developers.openshift.com/managing-your-applications/client-tools.html (since the dashboard can't allow to access to the app logs)
-
-####**Deployment**
-
-    rhc app-create mulist nodejs NPM_CONFIG_PRODUCTION="true" --from-code https://github.com/kimihub/mulist-api
-
-####**App logs**
-
-    rhc tail mulist
+####**Persistent Volume**
+To keep datas after idle or restart you'll need a persistent volume and use the **Environment Variable** `datapath = pathToData/datas.json`
 
 ## <a name="advanced_config"></a> Advanced configuration (config.js)
 
