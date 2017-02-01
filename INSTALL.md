@@ -50,6 +50,54 @@ MuList API is configured to automatically run by on the following list of cloud 
 ####**Persistent Volume**
 To keep datas after idle or restart you'll need a persistent volume and use the **Environment Variable** `datapath = pathToData/datas.json`
 
+
+### **Dedicated Server / VPS**
+
+####**Deployment on debian jessie with systemd**
+
+Install nodejs
+
+    $ curl -sL https://deb.nodesource.com/setup_6.x | bash -
+    $ apt install nodejs
+
+
+Copy or clone every files of this repository in `/opt/mulist-api`
+
+    $ git clone https://github.com/kimihub/mulist-api.git /opt/mulist-api
+
+Edit `/etc/systemd/system/mulist-api.service` to automatically start the app   
+
+    [Unit]
+    Description=MuList API
+    After=network.target
+
+    [Service]
+    User=root
+    Restart=always
+    RestartSec=3
+    StandardOutput=syslog
+    StandardError=syslog
+    SyslogIdentifier=mulist-api
+    Type=simple
+    Environment=HTTPS=1
+    Environment=PORT=443
+    WorkingDirectory=/opt/mulist-api
+    ExecStart=/usr/local/bin/node /opt/mulist-api/server.js
+    ExecStartPre=/usr/local/bin/node /opt/mulist-api/ssl.js
+
+    [Install]
+    WantedBy=multi-user.target
+
+
+Enable and start service
+
+    $ systemctl enable mulist-api
+    $ systemctl start mulist-api
+
+####**App logs**
+
+    $ systemctl status mulist-api
+
 ## <a name="advanced_config"></a> Advanced configuration (config.js)
 
 `port (80 | 443 | ...)` is required and must be an integer. In development you can define it directly with the command `PORT=8080 npm start`.
