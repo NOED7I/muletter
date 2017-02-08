@@ -1,6 +1,6 @@
 #   µList API 
 
-**MuList API** is a lightweight node server to make a mailing list
+**MuList API** is a lightweight nodejs API used to build and manage a mailing list.
 
 [![Build Status](https://travis-ci.org/kimihub/mulist-api.svg?branch=master)](https://travis-ci.org/kimihub/mulist-api)
 
@@ -16,11 +16,11 @@ Here are the minimal requirements of the server :
 
 ## Install
 
-Follow the steps in : https://github.com/kimihub/mulist-http/blob/master/INSTALL.md
+Follow the steps in : https://github.com/kimihub/mulist-api/blob/master/INSTALL.md
 
-## Manage app
+## Manage API
 
-To manage the distant app you need to install the CLI **MuList** on your computer : https://github.com/kimihub/mulist
+You need to install **MuList** on your computer to manage MuList API : https://github.com/kimihub/mulist
 
 You also need an **access key** which is automatically generated with `crypto` at each startup and printed on the app logs like bellow :
 
