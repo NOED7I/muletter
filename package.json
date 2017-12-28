@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "async": "2.1.x",
+    "snazzy": "^7.0.0",
     "standard": "^10.0.3"
   },
   "main": "server.js",
@@ -34,7 +35,7 @@
     "prestart": "node ssl.js",
     "pretest": "HTTPS=1 node ssl.js",
     "test": "npm run standard && node test routes router app",
-    "standard": "standard --fix --verbose *.js test/*.js"
+    "standard": "standard --fix --verbose *.js test/*.js | snazzy"
   },
   "dependencies": {}
 }
