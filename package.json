@@ -26,12 +26,15 @@
     "node": ">=4"
   },
   "devDependencies": {
-    "async": "2.1.x"
+    "async": "2.1.x",
+    "standard": "^10.0.3"
   },
   "main": "server.js",
   "scripts": {
     "prestart": "node ssl.js",
     "pretest": "HTTPS=1 node ssl.js",
-    "test": "node test routes router app"
-  }
+    "test": "npm run standard && node test routes router app",
+    "standard": "standard --fix --verbose *.js test/*.js"
+  },
+  "dependencies": {}
 }

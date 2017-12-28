@@ -1,37 +1,36 @@
-'use strict';
+'use strict'
 
-let cursor, data;
+let cursor
+let data
 
-const fs = require('fs'),
-errors = require('./errors'),
-emailRegExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
+const fs = require('fs')
+const errors = require('./errors')
+const emailRegExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
 
-initSchema = raw => {
-  cursor = raw.cursor || 0;
-  data = raw.data || new Array();
-},
+const initSchema = raw => {
+  cursor = raw.cursor || 0
+  data = raw.data || []
+}
 
-writeFile = () => {
+const writeFile = () => {
   fs.writeFile(process.env.datapath || './data.json', JSON.stringify({cursor: cursor, data: data}), err => {
     if (err) console.error(`Error: ${err}`)
   })
-};
+}
 
 // Open JSON data
 try {
   initSchema(JSON.parse(fs.readFileSync(process.env.datapath || './data.json')))
-}
-catch (ex) {
-  console.log('> First start: create data.json ...', '\n');
-  initSchema({});
-  writeFile();
+} catch (ex) {
+  console.log('> First start: create data.json ...', '\n')
+  initSchema({})
+  writeFile()
 }
 
 module.exports.add = (req, auth, next) => {
+  let email = req.body.email
 
-  let email = req.body.email;
-
-  if (!email || email && !emailRegExp.test(email)) {
+  if (!email || (email && !emailRegExp.test(email))) {
     return next(errors.Conflict('wrong email'))
   }
 
@@ -39,28 +38,27 @@ module.exports.add = (req, auth, next) => {
     return next(errors.Conflict('already exists'))
   }
 
-  data.push(email);
-  writeFile();
+  data.push(email)
+  writeFile()
 
-  next({data: email});
-
-};
+  next({data: email})
+}
 
 module.exports.remove = (req, auth, next) => {
-
   if (!auth) {
     return next(errors.Unauthorized())
   }
 
-  let email = req.body.email, index;
+  let email = req.body.email
+  let index
 
-  if (!email || email && !emailRegExp.test(email)) {
+  if (!email || (email && !emailRegExp.test(email))) {
     return next(errors.Conflict('wrong email'))
   }
 
-  index = data.indexOf(email);
+  index = data.indexOf(email)
 
-  if (index == -1) {
+  if (index === -1) {
     return next(errors.Conflict('does not exist'))
   }
 
@@ -69,15 +67,13 @@ module.exports.remove = (req, auth, next) => {
     cursor -= 1
   }
 
-  data.splice(index, 1);
-  writeFile();
+  data.splice(index, 1)
+  writeFile()
 
-  next({data: email});
-
-};
+  next({data: email})
+}
 
 module.exports.import = (req, auth, next) => {
-
   if (!auth) {
     return next(errors.Unauthorized())
   }
@@ -87,48 +83,42 @@ module.exports.import = (req, auth, next) => {
   }
 
   if (req.body.cursor !== undefined) {
-
-    let newCursor = parseInt(req.body.cursor, 10);
+    let newCursor = parseInt(req.body.cursor, 10)
 
     if (isNaN(newCursor) || newCursor < 0) {
       return next(errors.Conflict('cursor must be a positive integer or equal to zero'))
     }
 
-    cursor = newCursor;
+    cursor = newCursor
   }
 
-  data = data.slice(cursor, data.length);
-  data = data.concat(req.body.data.split('\n'));
-  cursor = 0;
-  writeFile();
+  data = data.slice(cursor, data.length)
+  data = data.concat(req.body.data.split('\n'))
+  cursor = 0
+  writeFile()
 
-  next({data: data.join('\n')});
-
-};
+  next({data: data.join('\n')})
+}
 
 module.exports.export = (req, auth, next) => {
-
   if (!auth) {
     return next(errors.Unauthorized())
   }
 
-  cursor = data.length;
-  writeFile();
+  cursor = data.length
+  writeFile()
 
-  next({data: data.join('\n')});
-
-};
+  next({data: data.join('\n')})
+}
 
 module.exports.empty = (req, auth, next) => {
-
   if (!auth) {
     return next(errors.Unauthorized())
   }
 
-  cursor = 0;
-  data = new Array();
-  writeFile();
+  cursor = 0
+  data = []
+  writeFile()
 
-  next({data: ''});
-
-};
+  next({data: ''})
+}

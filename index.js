@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-const config = require('./config.js');
+const config = require('./config.js')
 
 module.exports = `<!DOCTYPE html>
 <html>
@@ -234,4 +234,4 @@ form.addEventListener('submit', function (event) {
 });
 </script>
 </body>
-</html>`;
+</html>`

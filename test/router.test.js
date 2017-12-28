@@ -1,24 +1,24 @@
-'use strict';
+'use strict'
 
-const Router = require('../router'), fs = require('fs');
+const Router = require('../router')
+const fs = require('fs')
 
-console.log('> Test router.js');
+console.log('> Test router.js')
 
-process.env.datapath = './datatest.json';
-if (fs.existsSync(process.env.datapath)) fs.unlinkSync(process.env.datapath);
+process.env.datapath = './datatest.json'
+if (fs.existsSync(process.env.datapath)) fs.unlinkSync(process.env.datapath)
 
 module.exports.task = (test, cb) => {
   Router(test.req, test.auth, data => {
-    let output = {req: `${test.req.url} ${test.txt}`, res: JSON.stringify(data)};
-    if (data.errors && !test.should || !data.errors && test.should) {
-      output.err = false;
-      cb(null, output);
+    let output = {req: `${test.req.url} ${test.txt}`, res: JSON.stringify(data)}
+    if ((data.errors && !test.should) || (!data.errors && test.should)) {
+      output.err = false
+      cb(null, output)
+    } else {
+      output.err = true
+      cb(null, output)
     }
-    else {
-      output.err = true;
-      cb(null, output);
-    }
-  });
+  })
 }
 
 module.exports.tests = [
@@ -32,7 +32,7 @@ module.exports.tests = [
     txt: 'Unsigned url',
     should: false,
     auth: 0,
-    req: {url: '/export'},
+    req: {url: '/export'}
   },
   {
     txt: 'Signed url',
@@ -45,5 +45,5 @@ module.exports.tests = [
     should: false,
     auth: 1,
     req: {url: '/delete'}
-  } 
+  }
 ]
