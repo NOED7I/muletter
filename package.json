@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "async": "2.1.x",
+    "pre-commit": "^1.2.2",
     "snazzy": "^7.0.0",
     "standard": "^10.0.3"
   },
@@ -37,5 +38,6 @@
     "test": "npm run standard && node test routes router app",
     "standard": "standard --fix --verbose *.js test/*.js | snazzy"
   },
+  "pre-commit": "test",
   "dependencies": {}
 }
