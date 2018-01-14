@@ -1,5 +1,5 @@
 {
-  "name": "mulist-api",
+  "name": "mulist-server",
   "version": "0.4.0",
   "description": "lightweight node server to make a mailing list",
   "keywords": [
@@ -9,7 +9,7 @@
     "mailing",
     "list",
     "server",
-    "ipfs",
+    "json",
     "http"
   ],
   "author": {
@@ -17,10 +17,10 @@
     "url": "https://github.com/kimihub"
   },
   "license": "GPL-3.0",
-  "homepage": "https://github.com/kimihub/mulist-api",
+  "homepage": "https://github.com/kimihub/mulist-server",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kimihub/mulist-api"
+    "url": "https://github.com/kimihub/mulist-server"
   },
   "engines": {
     "node": ">=4"

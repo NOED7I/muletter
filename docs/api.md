@@ -1,5 +1,4 @@
-# µList API
-
+# MULIST server API
 ### Add email
 
 **Request**

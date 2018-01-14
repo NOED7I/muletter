@@ -1,26 +1,27 @@
-#   µList API 
+#   MULIST server 
 
-**MuList API** is a lightweight nodejs API used to build and manage a mailing list.
+**MULIST server** is a minimalist email list driven by a Web API running on a database-less Node.js app using a JSON file as data storage.
 
-[![Build Status](https://travis-ci.org/kimihub/mulist-api.svg?branch=master)](https://travis-ci.org/kimihub/mulist-api)
+[![Build Status](https://travis-ci.org/kimihub/mulist-server.svg?branch=master)](https://travis-ci.org/kimihub/mulist-server)
 
 ## Server requirements
 
-You need a http web server or a cloud hosting account to deploy MuList API.
+You need a http web server or a cloud hosting account to deploy MULIST server.
 
 Here are the minimal requirements of the server :
 
 - **Node.js >= 4** build with crypto module
 - **https** support
 - **openssl** installed if you've chosen to handle https with Node.js
+- **Persistent storage** is obviously required to keep JSON file data integrity
 
 ## Install
 
-Follow the steps in : https://github.com/kimihub/mulist-api/blob/master/INSTALL.md
+Follow the steps in : https://github.com/kimihub/mulist-server/blob/master/INSTALL.md
 
-## Manage API
+## Manage Web API
 
-You need to install **MuList** on your computer to manage MuList API : https://github.com/kimihub/mulist
+You need to install **MULIST cli** on your computer to manage MULIST server : https://github.com/kimihub/mulist-cli
 
 You also need an **access key** which is automatically generated with `crypto` at each startup and printed on the app logs like bellow :
 
@@ -113,4 +114,4 @@ More about CORS (Cross-origin Resource Sharing) : https://en.wikipedia.org/wiki/
 
 ## API
 
-https://github.com/kimihub/mulist-api/blob/master/docs/api.md
+https://github.com/kimihub/mulist-server/blob/master/docs/api.md

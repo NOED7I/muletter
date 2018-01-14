@@ -1,4 +1,4 @@
-# Install µList API
+# Install MULIST server
 
 Three steps : Clone, Config, Deploy
 
@@ -12,7 +12,7 @@ For a dedicated server or a VPS, go to [Avanced configuration](#advanced_config)
 
 ## Deploy
 
-MuList API is configured to automatically run by on the following list of cloud hosting services.
+MULIST server is configured to automatically run by on the following list of cloud hosting services.
 
 ### **Openshift Online V3**
 
@@ -24,7 +24,7 @@ MuList API is configured to automatically run by on the following list of cloud 
 
 #####**Name App and Git Repository Url**
 
-- Fill **Name** `Name of your choice` and **Git Repository URL** `https://github.com/kimihub/mulist-api`
+- Fill **Name** `Name of your choice` and **Git Repository URL** `https://github.com/kimihub/mulist-server`
 
 #####**Activate https**
 
@@ -61,14 +61,14 @@ Install nodejs
     $ apt install nodejs
 
 
-Copy or clone every files of this repository in `/opt/mulist-api`
+Copy or clone every files of this repository in `/opt/mulist-server`
 
-    $ git clone https://github.com/kimihub/mulist-api.git /opt/mulist-api
+    $ git clone https://github.com/kimihub/mulist-server.git /opt/mulist-server
 
-Edit `/etc/systemd/system/mulist-api.service` to automatically start the app   
+Edit `/etc/systemd/system/mulist-server.service` to automatically start the app   
 
     [Unit]
-    Description=MuList API
+    Description=MULIST server
     After=network.target
 
     [Service]
@@ -77,13 +77,13 @@ Edit `/etc/systemd/system/mulist-api.service` to automatically start the app
     RestartSec=3
     StandardOutput=syslog
     StandardError=syslog
-    SyslogIdentifier=mulist-api
+    SyslogIdentifier=mulist-server
     Type=simple
     Environment=HTTPS=1
     Environment=PORT=443
-    WorkingDirectory=/opt/mulist-api
-    ExecStart=/usr/local/bin/node /opt/mulist-api/server.js
-    ExecStartPre=/usr/local/bin/node /opt/mulist-api/ssl.js
+    WorkingDirectory=/opt/mulist-server
+    ExecStart=/usr/local/bin/node /opt/mulist-server/server.js
+    ExecStartPre=/usr/local/bin/node /opt/mulist-server/ssl.js
 
     [Install]
     WantedBy=multi-user.target
@@ -91,12 +91,12 @@ Edit `/etc/systemd/system/mulist-api.service` to automatically start the app
 
 Enable and start service
 
-    $ systemctl enable mulist-api
-    $ systemctl start mulist-api
+    $ systemctl enable mulist-server
+    $ systemctl start mulist-server
 
 ####**App logs**
 
-    $ systemctl status mulist-api
+    $ systemctl status mulist-server
 
 ## <a name="advanced_config"></a> Advanced configuration (config.js)
 
