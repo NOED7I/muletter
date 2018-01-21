@@ -10,14 +10,45 @@ You need a http web server or a cloud hosting account to deploy MULIST server.
 
 Here are the minimal requirements of the server :
 
-- **Node.js >= 4** build with crypto module
-- **https** support
-- **openssl** installed if you've chosen to handle https with Node.js
+- **Node.js >= 7.10.1**
 - **Persistent storage** is obviously required to keep JSON file data integrity
 
-## Install
+Some Node.js modules are required in some cases : 
+- **crypto** support to generate an **access key**
+- **https** support to handle HTTPS with Node.js
 
-Follow the steps in : https://github.com/kimihub/mulist-server/blob/master/INSTALL.md
+Operating system packages : 
+- **openssl** installed to generate Self-Signed SSL certificates if needed
+
+## Advanced configuration
+
+Environment variables and config.js are both used to configure MULIST server.
+
+`PORT (80 | 443 | ...)` is required and must be an integer. In development you can define it directly with the command `PORT=8080 npm start`.
+
+`HOST` is optionnal but for some web hosting / PaaS an IP is required like Openshift Online (`process.env.OPENSHIFT_NODEJS_IP`). You can provide an empty host or simply comment it.
+
+`FORCE_SSL (false | true)` is optionnal. `false` or simply not defined to not force SSL. If `true`, SSL will be activated whatever the defined PORT.
+
+`KEY` is optionnal and should be used only for development purpose. It disables the crypto auto-generation access key.
+
+`DATA_PATH` is optionnal. You can define it if your persistent volume storage has a specific path.
+
+## HTTPS
+
+To secure the Web API with HTTPS, the common practice is to use nginx to handle SSL certificates or HTTPS support provided with cloud hosting (Heroku, Openshift ...) but you might want to use HTTPS support of MULIST server.
+
+First you must name your SSL certificates as bellow before deploying : 
+- **key** : `/ssl.key`
+- **cert** : `/ssl.crt`
+
+Then activate SSL by listening the port 443 or forcing SSL with environment variables :
+
+    PORT=443 npm start
+    // or
+    FORCE_SSL=true PORT=8080 npm start
+
+If the certificates are not found with these names, self-signed certificates will be generated. Note that self-signed certificates are not recommended in production.
 
 ## Manage Web API
 
@@ -27,6 +58,10 @@ You also need an **access key** which is automatically generated with `crypto` a
 
     > Access key : <hash>
     > Listening on port <port>
+
+You can also define it yourself with environment variables :
+
+    KEY=myKEY npm start
 
 ## Internal E-mail submitter form
 

@@ -1,7 +1,7 @@
 {
   "name": "mulist-server",
   "version": "0.4.0",
-  "description": "lightweight node server to make a mailing list",
+  "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
     "newsletter",
@@ -23,7 +23,7 @@
     "url": "https://github.com/kimihub/mulist-server"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=7.10.1"
   },
   "devDependencies": {
     "async": "2.1.x",
@@ -33,8 +33,6 @@
   },
   "main": "server.js",
   "scripts": {
-    "prestart": "node ssl.js",
-    "pretest": "HTTPS=1 node ssl.js",
     "test": "npm run standard && node test routes router app",
     "standard": "standard --fix --verbose *.js test/*.js | snazzy"
   },

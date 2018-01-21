@@ -1,16 +1,16 @@
 'use strict'
 
-let config = require('./config')
+const fs = require('fs')
 
-if (config.https || process.env.HTTPS) {
+async function selfSigned () {
   const exec = require('child_process').exec
-  const error = s => (`\x1b[38;5;01m[ERR] ${s} \x1b[0m`)
   const cmd = `
-    mkdir -p certificates;
-    openssl req -batch -newkey rsa:2048 -new -nodes -keyout certificates/key.pem -out certificates/csr.pem;
-    openssl x509 -req -in certificates/csr.pem -signkey certificates/key.pem -out certificates/server.crt;
+    openssl req -batch -newkey rsa:2048 -new -nodes -keyout ssl.key -out ssl.csr;
+    openssl x509 -req -in ssl.csr -signkey ssl.key -out ssl.crt;
   `
-  exec(cmd, (err, stdout, stderr) => {
+  const error = s => (`\x1b[38;5;01m[ERR] ${s} \x1b[0m`)
+
+  await exec(cmd, (err, stdout, stderr) => {
     if (err) {
       console.error(err)
       console.error(error('openssl is required'))
@@ -19,5 +19,20 @@ if (config.https || process.env.HTTPS) {
 
     console.log(stdout)
     console.log(stderr)
+
+    // Authorize HTTPS connections with self-signed SSL certificates
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
   })
+}
+
+const key = () => fs.existsSync('ssl.key') && fs.readFileSync('ssl.key', 'utf-8')
+const cert = () => fs.existsSync('ssl.crt') && fs.readFileSync('ssl.crt', 'utf-8')
+
+if (!key() || !cert()) {
+  selfSigned()
+}
+
+module.exports = {
+  key: key(),
+  cert: cert()
 }

@@ -4,6 +4,7 @@ let cursor
 let data
 
 const fs = require('fs')
+const config = require('./config')
 const errors = require('./errors')
 const emailRegExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
 
@@ -13,7 +14,7 @@ const initSchema = raw => {
 }
 
 const writeFile = () => {
-  fs.writeFile(process.env.datapath || './data.json', JSON.stringify({cursor: cursor, data: data}), err => {
+  fs.writeFile(process.env.DATA_PATH || config.DATA_PATH || './data.json', JSON.stringify({cursor: cursor, data: data}), err => {
     if (err) console.error(`Error: ${err}`)
   })
 }

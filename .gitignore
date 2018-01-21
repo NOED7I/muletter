@@ -1,10 +1,3 @@
-# JSON Data
-*.json
-
-# SSL certificates
-*.pem
-*.crt
-
 # Logs
 logs
 *.log

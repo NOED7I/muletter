@@ -3,22 +3,20 @@
 const querystring = require('querystring')
 const fs = require('fs')
 
-let config = require('../config')
-
 console.log('> Run server.js and test all the app')
 
 process.env.datapath = './datatest.json'
 if (fs.existsSync(process.env.datapath)) fs.unlinkSync(process.env.datapath)
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-require('../server')
+process.env.PORT = 8080
+const { PORT, KEY } = require('../server')
 
 module.exports.task = (test, cb) => {
   let postData = querystring.stringify(test.form ? test.form : {})
   let log = `${test.method} ${test.route} ${test.txt}`
   let options = {
     hostname: '127.0.0.1',
-    port: config.port,
+    port: PORT,
     path: test.route,
     method: test.method,
     headers: {
@@ -26,7 +24,7 @@ module.exports.task = (test, cb) => {
       'Content-Length': Buffer.byteLength(postData)
     }
   }
-  let req = require(config.https ? 'https' : 'http').request(options, res => {
+  let req = require('http').request(options, res => {
     res.setEncoding('utf8')
     res.on('data', chunk => {
       cb(null, {err: false, req: log, res: chunk})
@@ -62,7 +60,7 @@ exports.tests = [
     route: '/import',
     method: 'POST',
     txt: 'should add kim@gmail.com,kim2@gmail.com',
-    form: {key: config.key, data: 'kim@gmail.com\nkim2@gmail.com'}
+    form: {key: KEY, data: 'kim@gmail.com\nkim2@gmail.com'}
   },
   {
     route: '/add',
@@ -86,18 +84,18 @@ exports.tests = [
     route: '/remove',
     method: 'POST',
     txt: 'should remove kim2@gmail.com',
-    form: {key: config.key, email: 'kim2@gmail.com'}
+    form: {key: KEY, email: 'kim2@gmail.com'}
   },
   {
     route: '/export',
     method: 'POST',
     txt: 'should export the list',
-    form: {key: config.key}
+    form: {key: KEY}
   },
   {
     route: '/empty',
     method: 'POST',
     txt: 'should clear all the list',
-    form: {key: config.key}
+    form: {key: KEY}
   }
 ]

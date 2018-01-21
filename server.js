@@ -1,5 +1,6 @@
 'use strict'
 
+const config = require('./config')
 const errors = require('./errors')
 const router = require('./router')
 
@@ -7,36 +8,28 @@ const red = () => {
   return `\x1b[38;5;01m[ERR] ${this} \x1b[0m`
 }
 
-let config = require('./config')
-let crypto
+const PORT = parseInt(process.env.PORT || config.PORT, 10) || 443
+const HOST = process.env.HOST || config.HOST || false
+const FORCE_SSL = process.env.FORCE_SSL || config.FORCE_SSL || false
 
-// if env var PORT is used
-if (process.env.PORT) {
-  config.port = process.env.PORT
-}
-
-// port required
-if (!config.port || isNaN(config.port)) {
-  console.error(red('port is required'))
-  process.exit(1)
-}
-
-if (!config.key) {
-  // crypto required
+let KEY = process.env.KEY || config.KEY || ''
+// If no access key is defined generate one
+if (!KEY) {
+  // Crypto required
   try {
-    crypto = require('crypto')
+    KEY = require('crypto').randomBytes(20).toString('hex')
   } catch (Exception) {
     console.log('[Exception]', Exception)
     console.error(red('crypto support is required :'), 'this Node.js build does not include support for the crypto module')
     process.exit(1)
   }
-
-  // generate an access key
-  config.key = crypto.randomBytes(20).toString('hex')
-  console.log('> Access key:', config.key)
+  console.log('> Access key:', KEY)
 }
 
-function handleRequest (req, res) {
+// Export var env
+module.exports = { PORT, HOST, KEY }
+
+const handleRequest = (req, res) => {
   // Get Body Data
   let buffer = ''
   req.setEncoding('utf8')
@@ -49,7 +42,7 @@ function handleRequest (req, res) {
     req.body = require('querystring').parse(buffer.trim())
 
     // Authentication
-    let auth = req.body.key === config.key
+    let auth = req.body.key === KEY
 
     router(req, auth, data => {
       if (typeof data === 'string') {
@@ -77,18 +70,15 @@ function handleRequest (req, res) {
   })
 }
 
-function logServer () {
-  console.log('> Listening on port:', config.port)
+const log = () => {
+  console.log(`> Listening on port ${PORT} - HTTPS is ${PORT === 443 || FORCE_SSL ? 'enabled' : 'disabled'}`)
 }
 
-if (config.https) {
+// Enable HTTPS only if PORT 443 is used or SSL forced
+if (PORT === 443 || FORCE_SSL) {
   const https = require('https')
-  const fs = require('fs')
-  https.createServer({
-    key: fs.readFileSync('certificates/key.pem', 'utf-8'),
-    cert: fs.readFileSync('certificates/server.crt', 'utf-8')
-  }, handleRequest).listen(config.port, config.host ? config.host : false, logServer)
+  https.createServer(require('./ssl'), handleRequest).listen(PORT, HOST, log)
 } else {
   const http = require('http')
-  http.createServer(handleRequest).listen(config.port, config.host ? config.host : false, logServer)
+  http.createServer(handleRequest).listen(PORT, HOST, log)
 }
