@@ -26,9 +26,9 @@ Environment variables and config.js are both used to configure MULIST server.
 
 `PORT (80 | 443 | ...)` is required and must be an integer. In development you can define it directly with the command `PORT=8080 npm start`.
 
-`HOST` is optionnal but for some web hosting / PaaS an IP is required like Openshift Online (`process.env.OPENSHIFT_NODEJS_IP`). You can provide an empty host or simply comment it.
+`HOST` is optionnal but for some cloud hosting an IP is required.
 
-`FORCE_SSL (false | true)` is optionnal. `false` or simply not defined to not force SSL. If `true`, SSL will be activated whatever the defined PORT.
+`FORCE_SSL (false | true)` is optionnal. If `true`, SSL will be activated whatever the defined PORT.
 
 `KEY` is optionnal and should be used only for development purpose. It disables the crypto auto-generation access key.
 
