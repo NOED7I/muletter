@@ -4,4 +4,8 @@ module.exports = {
   // FORCE_SSL: false,
   // KEY: 'myKey',
   // DATA_PATH: '/path/to/data.json'
+  // TITLE: 'submitter form title',
+  // PICTURE: 'submitter picture link',
+  // STYLESHEET: 'submitter css stylesheet link'
+
 }

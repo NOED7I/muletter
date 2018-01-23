@@ -1,4 +1,4 @@
-#   MULIST server 
+#   MULIST server
 
 **MULIST server** is a minimalist email list driven by a Web API running on a database-less Node.js app using a JSON file as data storage.
 
@@ -13,32 +13,40 @@ Here are the minimal requirements of the server :
 - **Node.js >= 7.10.1**
 - **Persistent storage** is obviously required to keep JSON file data integrity
 
-Some Node.js modules are required in some cases : 
+Some Node.js modules are required in some cases :
 - **crypto** support to generate an **access key**
 - **https** support to handle HTTPS with Node.js
 
-Operating system packages : 
+Operating system packages :
 - **openssl** installed to generate Self-Signed SSL certificates if needed
 
-## Advanced configuration
+## Configuration
 
 Environment variables and config.js are both used to configure MULIST server.
 
-`PORT (80 | 443 | ...)` is required and must be an integer. In development you can define it directly with the command `PORT=8080 npm start`.
+`PORT (80 | 443 | ...)` is required and must be an integer.
 
 `HOST` is optionnal but for some cloud hosting an IP is required.
 
-`FORCE_SSL (false | true)` is optionnal. If `true`, SSL will be activated whatever the defined PORT.
+`FORCE_SSL` is optionnal. If `true`, SSL will be activated whatever the defined PORT.
 
 `KEY` is optionnal and should be used only for development purpose. It disables the crypto auto-generation access key.
 
 `DATA_PATH` is optionnal. You can define it if your persistent volume storage has a specific path.
 
+`TITLE` is optionnal. Title string displayed as the head `<title>` and `<h1>` of the internal E-mail submitter form.
+
+`PICTURE` is optionnal. Image link displayed as the head `<img>` of the internal E-mail submitter form.
+
+`STYLESHEET` is optionnal. CSS stylesheet link of the internal E-mail submitter form.
+
+`MAX_WIDTH` is optionnal. CSS max-width value of the internal E-mail submitter form, the default value is `320px`.
+
 ## HTTPS
 
 To secure the Web API with HTTPS, the common practice is to use nginx to handle SSL certificates or HTTPS support provided with cloud hosting (Heroku, Openshift ...) but you might want to use HTTPS support of MULIST server.
 
-First you must name your SSL certificates as bellow before deploying : 
+First you must name your SSL certificates as bellow before deploying :
 - **key** : `/ssl.key`
 - **cert** : `/ssl.crt`
 
@@ -69,83 +77,17 @@ If CORS cannot be enabled on your cloud hosting, you may use the internal form b
 
 More about CORS (Cross-origin Resource Sharing) : https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
 
-## CORS E-mail submitter form example
+For **customization** and **styling** you can use the environment variables like bellow :
 
-    <form id=form>
-      <input placeholder=email type=email name=email>
-      <input type=submit name=submit value=Send>
-    </form>
+    TITLE='Email List Title' PICTURE='http://urlOfMyPicture.jpg' STYLESHEET='http://urlOfMyStylesheet.css' MAX_WIDTH=325 npm start
 
-    <script>
-      var form = document.getElementById('#form');
+For the `STYLESHEET` prefer a **classless CSS framework** like [Barecss](http://barecss.com/), [Marx-css](https://mblode.github.io/marx/) or [Sakura.css](https://oxal.org/projects/sakura/).
 
-      // unlock submit button on email field focus
-      form.email.addEventListener('focus', function () {
-        form.submit.disabled = '';
-      });
-
-      // listen submit event
-      form.addEventListener('submit', function (event) {
-        var xhr, onfail;
-        
-        // stop all event
-        event.preventDefault();
-
-        // do not send anything if email field is empty
-        if (form.email.value.trim() === '') {
-          return;
-        }
-
-        // lock form while request
-        form.email.disabled = 'true';
-        form.submit.disabled = 'true';
-
-        xhr = new XMLHttpRequest();
-
-        // parse response JSON
-        xhr.onreadystatechange = function () {
-          if(xhr.readyState === XMLHttpRequest.DONE) {
-            try {
-              xhr.responseJSON = JSON.parse(xhr.responseText);
-            } catch(e) {
-              xhr.responseJSON = null;
-            }
-          }
-        };
-
-        xhr.addEventListener('load', function() {
-          // unlock email field
-          form.email.disabled = '';
-
-          // if the app return an error
-          if (this.status !== 200) {
-            alert("Error: " + this.responseJSON.message);
-          }
-
-          // if success
-          if (this.responseJSON.data) {
-            alert(this.responseJSON.data + ' submitted with success');
-          }
-        });
-
-        // define action on failure
-        onfail = function() {
-          alert('Error: the request has failed');
-          form.email.disabled = '';
-          form.submit.disabled = '';
-        };
-        xhr.addEventListener('abort', onfail);
-        xhr.addEventListener('error', onfail);
-        xhr.addEventListener('timeout', onfail);
-
-        // send data
-        xhr.open('POST', 'https://urlOfMyServer.com/add');
-        xhr.send('email=' + form.email.value);
-      }
-
-    </script>
-
-
+Examples :
+- Native https://embed.plnkr.co/5GqchBwaeVs7gForcTXI/
+- Barecss https://embed.plnkr.co/eF8tW86WNqYXwBpcpZrQ/
+- Marx-css https://embed.plnkr.co/0FiJARscCetudBVxIxpC/
+- Sakura.css https://embed.plnkr.co/BDr27CzEY0Hao1GYaznw/
 
 ## API
 
