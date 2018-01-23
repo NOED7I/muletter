@@ -22,7 +22,7 @@ Operating system packages :
 
 ## Configuration
 
-Environment variables and config.js are both used to configure MULIST server.
+**Environment variables** are used to configure MULIST server. You can also use `config.js` if in some cases you cannot set them.
 
 `PORT (80 | 443 | ...)` is required and must be an integer.
 
@@ -44,7 +44,7 @@ Environment variables and config.js are both used to configure MULIST server.
 
 ## HTTPS
 
-To secure the Web API with HTTPS, the common practice is to use nginx to handle SSL certificates or HTTPS support provided with cloud hosting (Heroku, Openshift ...) but you might want to use HTTPS support of MULIST server.
+To secure the Web API with HTTPS, the common practice is to use nginx to handle SSL certificates or HTTPS support provided with cloud hosting (Heroku, Openshift ...) but you might want to use HTTPS support of Node.js.
 
 First you must name your SSL certificates as bellow before deploying :
 - **key** : `/ssl.key`
