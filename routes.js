@@ -8,24 +8,41 @@ const config = require('./config')
 const errors = require('./errors')
 const emailRegExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
 
+const dataFileName = process.env.NODE_ENV === 'test' ? './test/data.test.json' : process.env.DATA_PATH || config.DATA_PATH || './data.json'
+
 const initSchema = raw => {
   cursor = raw.cursor || 0
   data = raw.data || []
 }
 
 const writeFile = () => {
-  fs.writeFile(process.env.DATA_PATH || config.DATA_PATH || './data.json', JSON.stringify({cursor: cursor, data: data}), err => {
+  fs.writeFile(dataFileName, JSON.stringify({cursor: cursor, data: data}), err => {
     if (err) console.error(`Error: ${err}`)
   })
 }
 
 // Open JSON data
 try {
-  initSchema(JSON.parse(fs.readFileSync(process.env.DATA_PATH || config.DATA_PATH || './data.json')))
+  initSchema(JSON.parse(fs.readFileSync(dataFileName)))
 } catch (ex) {
-  console.log(`> First start: create ${process.env.DATA_PATH || config.DATA_PATH || 'data.json'} ...`, '\n')
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`> First start: create ${dataFileName}`, '\n')
+  }
   initSchema({})
   writeFile()
+}
+
+// Trigger all events when testing
+if (process.env.NODE_ENV === 'test') {
+  process.on('SIGINT', () => { process.exit() })
+  process.on('SIGILL', () => { process.exit() })
+  process.on('SIGHUP', () => { process.exit() })
+  process.on('SIGBREAK', () => { process.exit() })
+  process.on('exit', () => {
+    if (fs.existsSync('./test/data.test.json')) {
+      fs.unlinkSync('./test/data.test.json')
+    } 
+  })
 }
 
 module.exports.add = (req, auth, next) => {

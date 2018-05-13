@@ -1,10 +1,5 @@
 'use strict'
 
-const fs = require('fs')
-if (fs.existsSync(process.env.DATA_PATH)) {
-  fs.unlinkSync(process.env.DATA_PATH)
-}
-
 const test = require('ava')
 
 const { PORT, KEY, HOST } = require('../server')

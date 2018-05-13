@@ -23,7 +23,9 @@ if (!KEY) {
     console.error(red('crypto support is required :'), 'this Node.js build does not include support for the crypto module')
     process.exit(1)
   }
-  console.log('> Access key:', KEY)
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('> Access key:', KEY)
+  }
 }
 
 // Export var env
@@ -71,7 +73,9 @@ const handleRequest = (req, res) => {
 }
 
 const log = () => {
-  console.log(`> Listening on port ${PORT} - HTTPS is ${PORT === 443 || FORCE_SSL ? 'enabled' : 'disabled'}`)
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`> Listening on port ${PORT} - HTTPS is ${PORT === 443 || FORCE_SSL ? 'enabled' : 'disabled'}`)
+  }
 }
 
 // Enable HTTPS only if PORT 443 is used or SSL forced
