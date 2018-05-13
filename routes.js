@@ -21,9 +21,9 @@ const writeFile = () => {
 
 // Open JSON data
 try {
-  initSchema(JSON.parse(fs.readFileSync(process.env.datapath || './data.json')))
+  initSchema(JSON.parse(fs.readFileSync(process.env.DATA_PATH || config.DATA_PATH || './data.json')))
 } catch (ex) {
-  console.log('> First start: create data.json ...', '\n')
+  console.log(`> First start: create ${process.env.DATA_PATH || config.DATA_PATH || 'data.json'} ...`, '\n')
   initSchema({})
   writeFile()
 }
@@ -93,7 +93,7 @@ module.exports.import = (req, auth, next) => {
     cursor = newCursor
   }
 
-  data = data.slice(cursor, data.length)
+  data = data.slice(0, cursor)
   data = data.concat(req.body.data.split('\n'))
   cursor = 0
   writeFile()

@@ -1,154 +1,162 @@
 'use strict'
 
-const errors = require('../errors')
 const fs = require('fs')
-
-console.log('> Test routes.js')
-
-process.env.datapath = './datatest.json'
-if (fs.existsSync(process.env.datapath)) fs.unlinkSync(process.env.datapath)
-
-const routes = require('../routes')
-
-module.exports.task = (test, cb) => {
-  routes[test.route](test.body, test.auth, data => {
-    var output = {req: `/ ${test.route} ${test.txt}`, res: JSON.stringify(data)}
-
-    if ((data.data && (data.data !== test.should.data)) || (data.code && (data.code !== test.should.code && data.message !== test.should.message))) {
-      output.err = true
-      cb(null, output)
-    } else {
-      output.err = false
-      cb(null, output)
-    }
-  })
+if (fs.existsSync(process.env.DATA_PATH)) {
+  fs.unlinkSync(process.env.DATA_PATH)
 }
 
-module.exports.tests = [
-  {
-    route: 'add',
-    auth: false,
-    txt: '[email@provider] it should return that the email is wrong',
-    body: {body: {email: 'email@provider'}},
-    should: errors.Conflict('wrong email')
-  },
-  {
-    route: 'add',
-    auth: false,
-    txt: '[email@provider.com] it should return the email as a successfull request',
-    body: {body: {email: 'email@provider.com'}},
-    should: {data: 'email@provider.com'}
-  },
-  {
-    route: 'add',
-    auth: false,
-    txt: '[email@provider.com] it should return that the email already exists',
-    body: {body: {email: 'email@provider.com'}},
-    should: errors.Conflict('already exists')
-  },
-  {
-    route: 'remove',
-    auth: false,
-    txt: '[not authenticated] it should return that the request is unauthorized',
-    body: {body: {email: 'email@provider.com'}},
-    should: errors.Unauthorized()
-  },
-  {
-    route: 'remove',
-    auth: true,
-    txt: '[emailprovider.com] it should return that the email is wrong',
-    body: {body: {email: 'emailprovider.com'}},
-    should: errors.Conflict('wrong email')
-  },
-  {
-    route: 'remove',
-    auth: true,
-    txt: '[email@provider.me] it should return that the email does not exist',
-    body: {body: {email: 'email@provider.me'}},
-    should: errors.Conflict('does not exist')
-  },
-  {
-    route: 'remove',
-    auth: true,
-    txt: '[email@provider.com] it should return the email as a successfull request',
-    body: {body: {email: 'email@provider.com'}},
-    should: {data: 'email@provider.com'}
-  },
-  {
-    route: 'import',
-    auth: false,
-    txt: '[not authenticated] it should return that the request is unauthorized',
-    body: {body: {data: 'email1@gmx.com\nemail2@gmx.com\nemail3@gmx.com\nemail4@gmx.com'}},
-    should: errors.Unauthorized()
-  },
-  {
-    route: 'import',
-    auth: true,
-    txt: '[no data] it should return that the list to import is empty',
-    body: {body: {data: ''}},
-    should: errors.Conflict('data to import is empty')
-  },
-  {
-    route: 'import',
-    auth: true,
-    txt: '[email-list] it should return the email list as a successfull request',
-    body: {body: {data: 'email1@gmx.com\nemail2@gmx.com\nemail3@gmx.com\nemail4@gmx.com'}},
-    should: {data: 'email1@gmx.com\nemail2@gmx.com\nemail3@gmx.com\nemail4@gmx.com'}
-  },
-  {
-    route: 'import',
-    auth: true,
-    txt: '[negative cursor] it should return that the cursor must be a positive integer or equal to zero',
-    body: {body: {cursor: -5, data: 'inserted@cursor.com'}},
-    should: errors.Conflict('cursor must be a positive integer or equal to zero')
-  },
-  {
-    route: 'import',
-    auth: true,
-    txt: '[string cursor] it should return that the cursor must be a positive integer or equal to zero',
-    body: {body: {cursor: 'mystring', data: 'inserted@cursor.com'}},
-    should: errors.Conflict('cursor must be a positive integer or equal to zero')
-  },
-  {
-    route: 'import',
-    auth: true,
-    txt: '[no cursor] it should return the list with the email inserted@cursor.com at the last position',
-    body: {body: {data: 'inserted@cursor.com'}},
-    should: {data: 'email1@gmx.com\nemail2@gmx.com\nemail3@gmx.com\nemail4@gmx.com\ninserted@cursor.com'}
-  },
-  {
-    route: 'export',
-    auth: false,
-    txt: '[not authenticated] it should return that the request is unauthorized',
-    body: {},
-    should: errors.Unauthorized()
-  },
-  {
-    route: 'export',
-    auth: true,
-    txt: '[authenticated] it should return the list',
-    body: {},
-    should: {data: 'email1@gmx.com\nemail2@gmx.com\nemail3@gmx.com\nemail4@gmx.com\ninserted@cursor.com'}
-  },
-  {
-    route: 'import',
-    auth: true,
-    txt: '[new email-list, cursor set to 0] it should return the new list and keep the old one exported',
-    body: {body: {cursor: 0, data: 'email@provider.com\nemail2@provider.com\nemail3@provider.com\nemail4@provider.com'}},
-    should: {data: 'email1@gmx.com\nemail2@gmx.com\nemail3@gmx.com\nemail4@gmx.com\ninserted@cursor.com\nemail@provider.com\nemail2@provider.com\nemail3@provider.com\nemail4@provider.com'}
-  },
-  {
-    route: 'empty',
-    auth: false,
-    txt: '[not authenticated] it should return that the request is unauthorized',
-    body: {},
-    should: errors.Unauthorized()
-  },
-  {
-    route: 'empty',
-    auth: true,
-    txt: '[authenticated] it should return an empty list',
-    body: {},
-    should: {data: ''}
-  }
-]
+const test = require('ava')
+const routes = require('../routes')
+const errors = require('../errors')
+
+const email = 'email@provider.com'
+const wrongEmail = 'emailprovider.com'
+const emails = 'email1@provider.com\nemail2@provider.com\nemail3@provider.com\nemail4@provider.com'
+
+test('add', async t => {
+  const body = { email: email }
+  const expected = { data: email }
+  await routes.add({ body }, 0, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('add - wrong email', async t => {
+  const body = { email: wrongEmail }
+  const expected = errors.Conflict('wrong email')
+  await routes.add({ body }, 0, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('add - existing email', async t => {
+  const body = { email: email }
+  const expected = errors.Conflict('already exists')
+  await routes.add({ body }, 0, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('remove - not authenticated', async t => {
+  const body = { email: email }
+  const expected = errors.Unauthorized()
+  await routes.remove({ body }, 0, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('remove - wrong email', async t => {
+  const body = { email: wrongEmail }
+  const expected = errors.Conflict('wrong email')
+  await routes.remove({ body }, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('remove - not found email', async t => {
+  const body = { email: 'email@provider.me' }
+  const expected = errors.Conflict('does not exist')
+  await routes.remove({ body }, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('remove', async t => {
+  const body = { email: email }
+  const expected = { data: email }
+  await routes.remove({ body }, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('import - not authenticated', async t => {
+  const body = { data: emails }
+  const expected = errors.Unauthorized()
+  await routes.import({ body }, 0, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('import - no data', async t => {
+  const body = { data: '' }
+  const expected = errors.Conflict('data to import is empty')
+  await routes.import({ body }, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('import - no cursor', async t => {
+  const body = { data: emails }
+  await routes.import({ body }, 1, ({ data }) => {
+    if (data.includes(emails)) {
+      t.pass()
+    } else {
+      t.fail()
+    }
+  })
+})
+
+test('import - negative cursor', async t => {
+  const body = { data: emails, cursor: -5 }
+  const expected = errors.Conflict('cursor must be a positive integer or equal to zero')
+  await routes.import({ body }, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('import - string cursor', async t => {
+  const body = { data: emails, cursor: 'myCursor' }
+  const expected = errors.Conflict('cursor must be a positive integer or equal to zero')
+  await routes.import({ body }, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('export - not authenticated', async t => {
+  const expected = errors.Unauthorized()
+  await routes.export({}, 0, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('export', async t => {
+  await routes.export({}, 1, ({ data }) => {
+    if (data.includes(emails)) {
+      t.pass()
+    } else {
+      t.fail()
+    }
+  })
+})
+
+test('import - cursor set to 0 - new list', async t => {
+  const body = { data: emails, cursor: 0 }
+  await routes.import({ body }, 1, ({ data }) => {
+    if (data.includes(emails)) {
+      t.pass()
+    } else {
+      t.fail()
+    }
+  })
+})
+
+test('export - new list after import cursor set to 0', async t => {
+  const expected = { data: emails }
+  await routes.export({}, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('empty - not authenticated', async t => {
+  const expected = errors.Unauthorized()
+  await routes.empty({}, 0, data => {
+    t.deepEqual(data, expected)
+  })
+})
+
+test('empty', async t => {
+  const expected = { data: '' }
+  await routes.empty({}, 1, data => {
+    t.deepEqual(data, expected)
+  })
+})

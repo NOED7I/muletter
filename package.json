@@ -23,19 +23,20 @@
     "url": "https://github.com/kimihub/mulist-server"
   },
   "engines": {
-    "node": ">=7.10.1"
+    "node": ">=8.11.1"
   },
   "devDependencies": {
-    "async": "2.1.x",
-    "pre-commit": "^1.2.2",
+    "ava": "^1.0.0-beta.4",
+    "git-pre-commit": "^2.1.4",
     "snazzy": "^7.0.0",
     "standard": "^10.0.3"
   },
   "main": "server.js",
   "scripts": {
-    "test": "npm run standard && node test routes router app",
-    "standard": "standard --fix --verbose *.js test/*.js | snazzy"
+    "test": "DATA_PATH=data.test.json PORT=8080 ava test/*.test.js --color -v",
+    "test-unit": "DATA_PATH=data.test.json PORT=8080 ava test/*.test.js test/clean.js --watch --color -v",
+    "standard": "standard --fix --verbose *.js test/*.js | snazzy",
+    "precommit": "npm run standard && npm run test"
   },
-  "pre-commit": "test",
   "dependencies": {}
 }

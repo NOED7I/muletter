@@ -9,7 +9,7 @@ const red = () => {
 }
 
 const PORT = parseInt(process.env.PORT || config.PORT, 10) || 443
-const HOST = process.env.HOST || config.HOST || false
+const HOST = process.env.HOST || config.HOST || null
 const FORCE_SSL = process.env.FORCE_SSL || config.FORCE_SSL || false
 
 let KEY = process.env.KEY || config.KEY || ''
@@ -60,7 +60,7 @@ const handleRequest = (req, res) => {
 
         // Errors Status Code
         if (typeof data === 'object' && data.errors && data.code) {
-          res.statusCode = errors[data.code]
+          res.writeHead(errors[data.code])
         }
 
         // Send JSON data
