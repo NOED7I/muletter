@@ -10,7 +10,7 @@ You need a http web server or a cloud hosting account to deploy MULIST server.
 
 Here are the minimal requirements of the server :
 
-- **Node.js >= 7.10.1**
+- **Node.js >= 8**
 - **Persistent storage** is obviously required to keep JSON file data integrity
 
 Some Node.js modules are required in some cases :
@@ -30,6 +30,10 @@ Operating system packages :
 
 `FORCE_SSL` is optionnal. If `true`, SSL will be activated whatever the defined PORT.
 
+`SSL_KEY` and `SSL_CERT` are optionnal. This is the path of SSL Trusted CA Signed Certificates.
+
+`DOMAIN` is optionnal. It is used to create SSL Self-Signed Certificates.
+
 `KEY` is optionnal and should be used only for development purpose. It disables the crypto auto-generation access key.
 
 `DATA_PATH` is optionnal. You can define it if your persistent volume storage has a specific path.
@@ -46,17 +50,21 @@ Operating system packages :
 
 To secure the Web API with HTTPS, the common practice is to use nginx to handle SSL certificates or HTTPS support provided with cloud hosting (Heroku, Openshift ...) but you might want to use HTTPS support of Node.js.
 
-First you must name your SSL certificates as bellow before deploying :
-- **key** : `/ssl.key`
-- **cert** : `/ssl.crt`
-
 Then activate SSL by listening the port 443 or forcing SSL with environment variables :
 
     PORT=443 npm start
     // or
     FORCE_SSL=true PORT=8080 npm start
 
-If the certificates are not found with these names, self-signed certificates will be generated. Note that self-signed certificates are not recommended in production.
+
+You can use your own SSL Trusted CA Signed Certificates by defining their path in SSL_KEY and SSL_CERT :
+
+    PORT=443 SSL_KEY=/etc/pathToSSL/ssl.key SSL_CERT=/etc/pathToSSL/ssl.cert npm start
+    
+
+You can also use the SSL Self-Signed Certificates generated at each startup by defining your domain in DOMAIN :
+
+    PORT=443 DOMAIN=subdomain.domain.com npm start
 
 ## Manage Web API
 

@@ -34,7 +34,7 @@
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test PORT=8080 ava test/*.test.js --color -v",
-    "test-unit": "NODE_ENV=test PORT=8080 ava test/*.test.js --watch --color -v",
+    "test-watch": "NODE_ENV=test PORT=8080 ava test/*.test.js --watch --color -v",
     "standard": "standard --fix --verbose *.js test/*.js | snazzy",
     "precommit": "npm run standard && npm run test"
   },

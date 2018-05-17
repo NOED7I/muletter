@@ -4,8 +4,8 @@ const config = require('./config')
 const errors = require('./errors')
 const router = require('./router')
 
-const red = () => {
-  return `\x1b[38;5;01m[ERR] ${this} \x1b[0m`
+const red = (err) => {
+  return `\x1b[38;5;01m[ERR] ${err} \x1b[0m`
 }
 
 const PORT = parseInt(process.env.PORT || config.PORT, 10) || 443
@@ -81,7 +81,9 @@ const log = () => {
 // Enable HTTPS only if PORT 443 is used or SSL forced
 if (PORT === 443 || FORCE_SSL) {
   const https = require('https')
-  https.createServer(require('./ssl'), handleRequest).listen(PORT, HOST, log)
+  require('./ssl').get().then((ssl) => {
+    https.createServer(ssl, handleRequest).listen(PORT, HOST, log)
+  }).catch(err => console.error(err))
 } else {
   const http = require('http')
   http.createServer(handleRequest).listen(PORT, HOST, log)
