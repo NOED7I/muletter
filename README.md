@@ -10,7 +10,7 @@ You need a http web server or a cloud hosting account to deploy MULIST server.
 
 Here are the minimal requirements of the server :
 
-- **Node.js >= 8**
+- **Node.js >= 9**
 - **Persistent storage** is obviously required to keep JSON file data integrity
 
 Some Node.js modules are required in some cases :
