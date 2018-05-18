@@ -1,6 +1,6 @@
 {
   "name": "mulist-server",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -23,7 +23,7 @@
     "url": "https://github.com/kimihub/mulist-server"
   },
   "engines": {
-    "node": ">=8.11.1"
+    "node": ">=9.4.0"
   },
   "devDependencies": {
     "ava": "^1.0.0-beta.4",

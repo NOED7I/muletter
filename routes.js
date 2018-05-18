@@ -5,7 +5,7 @@ let data
 
 const fs = require('fs')
 const config = require('./config')
-const errors = require('./errors')
+const { ConflictError, UnauthorizedError } = require('./errors')
 const emailRegExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
 
 const dataFileName = process.env.NODE_ENV === 'test' ? './test/data.test.json' : process.env.DATA_PATH || config.DATA_PATH || './data.json'
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === 'test') {
   process.on('exit', () => {
     if (fs.existsSync('./test/data.test.json')) {
       fs.unlinkSync('./test/data.test.json')
-    } 
+    }
   })
 }
 
@@ -49,11 +49,11 @@ module.exports.add = (req, auth, next) => {
   let email = req.body.email
 
   if (!email || (email && !emailRegExp.test(email))) {
-    return next(errors.Conflict('wrong email'))
+    return next(ConflictError('wrong email'))
   }
 
   if (data.indexOf(email) !== -1) {
-    return next(errors.Conflict('already exists'))
+    return next(ConflictError('already exists'))
   }
 
   data.push(email)
@@ -64,20 +64,20 @@ module.exports.add = (req, auth, next) => {
 
 module.exports.remove = (req, auth, next) => {
   if (!auth) {
-    return next(errors.Unauthorized())
+    return next(UnauthorizedError())
   }
 
   let email = req.body.email
   let index
 
   if (!email || (email && !emailRegExp.test(email))) {
-    return next(errors.Conflict('wrong email'))
+    return next(ConflictError('wrong email'))
   }
 
   index = data.indexOf(email)
 
   if (index === -1) {
-    return next(errors.Conflict('does not exist'))
+    return next(ConflictError('does not exist'))
   }
 
   // Reajust cursor if higher than the index found
@@ -93,18 +93,18 @@ module.exports.remove = (req, auth, next) => {
 
 module.exports.import = (req, auth, next) => {
   if (!auth) {
-    return next(errors.Unauthorized())
+    return next(UnauthorizedError())
   }
 
   if (!req.body.data) {
-    return next(errors.Conflict('data to import is empty'))
+    return next(ConflictError('data to import is empty'))
   }
 
   if (req.body.cursor !== undefined) {
     let newCursor = parseInt(req.body.cursor, 10)
 
     if (isNaN(newCursor) || newCursor < 0) {
-      return next(errors.Conflict('cursor must be a positive integer or equal to zero'))
+      return next(ConflictError('cursor must be a positive integer or equal to zero'))
     }
 
     cursor = newCursor
@@ -120,7 +120,7 @@ module.exports.import = (req, auth, next) => {
 
 module.exports.export = (req, auth, next) => {
   if (!auth) {
-    return next(errors.Unauthorized())
+    return next(UnauthorizedError())
   }
 
   cursor = data.length
@@ -131,7 +131,7 @@ module.exports.export = (req, auth, next) => {
 
 module.exports.empty = (req, auth, next) => {
   if (!auth) {
-    return next(errors.Unauthorized())
+    return next(UnauthorizedError())
   }
 
   cursor = 0

@@ -2,41 +2,24 @@
 
 const test = require('ava')
 const Router = require('../router')
+const { NotFoundError, MethodNotAllowedError } = require('../errors')
 
-test('Unknown route', async t => {
-  await Router({ url: '/posts' }, 1, data => {
-    if (data.errors) {
-      t.pass()
-    } else {
-      t.fail()
-    }
+test('Unknown route', t => {
+  Router({ method: 'POST', url: '/posts' }, 1, data => {
+    t.deepEqual(data, NotFoundError())
   })
 })
 
-test('Index route', async t => {
-  await Router({ url: '/' }, 0, data => {
+test('Index route', t => {
+  Router({ url: '/' }, 0, data => {
     const expected = require('../index.js')
     t.true(typeof data === 'string')
     t.deepEqual(data, expected)
   })
 })
 
-test('Unsigned request', async t => {
-  await Router({ url: '/export' }, 0, data => {
-    if (data.errors) {
-      t.pass()
-    } else {
-      t.fail()
-    }
-  })
-})
-
-test('Signed request', async t => {
-  await Router({ url: '/export' }, 1, data => {
-    if (!data.errors) {
-      t.pass()
-    } else {
-      t.fail()
-    }
+test('Not Allowed Method', t => {
+  Router({ method: 'UPDATE', url: '/add' }, 1, data => {
+    t.deepEqual(data, MethodNotAllowedError())
   })
 })

@@ -5,7 +5,7 @@ const test = require('ava')
 const { PORT, KEY, HOST } = require('../server')
 
 const request = (method, path, body = {}) => new Promise((resolve, reject) => {
-  const data = require('querystring').stringify(body);
+  const data = require('querystring').stringify(body)
   const options = {
     hostname: HOST || '127.0.0.1',
     port: PORT,
@@ -13,7 +13,7 @@ const request = (method, path, body = {}) => new Promise((resolve, reject) => {
     path,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(data),
+      'Content-Length': Buffer.byteLength(data)
     }
   }
   require('http').request(options, res => {
@@ -51,7 +51,7 @@ test('POST /add { email: email@provider.com } - should return a JSON response', 
   }
 })
 
-/* test('UPDATE /add {} - should return Bad Request Error', async t => {
+test('UPDATE /add {} - should return Bad Request Error', async t => {
   const res = await request('UPDATE', '/add')
   t.is(res.statusCode, 400)
-}) */
+})

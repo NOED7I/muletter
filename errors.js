@@ -1,23 +1,15 @@
 'use strict'
 
-module.exports.ConflictError = 409
-module.exports.NotFoundError = 404
-module.exports.UnauthorizedError = 401
+class ApiError {
+  constructor (statusCode, message = '') {
+    this.message = message
+    this.statusCode = statusCode
+  }
+}
 
-module.exports.Conflict = (msg, err) => ({
-  code: 'ConflictError',
-  message: msg || '',
-  errors: err && typeof err.errors !== 'undefined' ? err.errors : (err || {})
-})
-
-module.exports.NotFound = (msg, err) => ({
-  code: 'NotFoundError',
-  message: msg || '',
-  errors: err && typeof err.errors !== 'undefined' ? err.errors : (err || {})
-})
-
-module.exports.Unauthorized = (msg, err) => ({
-  code: 'UnauthorizedError',
-  message: msg || '',
-  errors: err && typeof err.errors !== 'undefined' ? err.errors : (err || {})
-})
+module.exports = {
+  ConflictError: (message) => new ApiError(409, message),
+  NotFoundError: (message) => new ApiError(404, message),
+  UnauthorizedError: (message) => new ApiError(401, message),
+  MethodNotAllowedError: (message) => new ApiError(405, message)
+}

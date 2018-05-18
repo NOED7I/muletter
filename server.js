@@ -1,7 +1,6 @@
 'use strict'
 
 const config = require('./config')
-const errors = require('./errors')
 const router = require('./router')
 
 const red = (err) => {
@@ -46,7 +45,7 @@ const handleRequest = (req, res) => {
     // Authentication
     let auth = req.body.key === KEY
 
-    router(req, auth, data => {
+    router(req, auth, (data = {}) => {
       if (typeof data === 'string') {
         // Send Html
         res.writeHead(200)
@@ -60,9 +59,9 @@ const handleRequest = (req, res) => {
         res.setHeader('Access-Control-Allow-Methods', 'POST')
         res.setHeader('Content-Type', 'application/json')
 
-        // Errors Status Code
-        if (typeof data === 'object' && data.errors && data.code) {
-          res.writeHead(errors[data.code])
+        // Send statusCode if error
+        if (data.constructor.name === 'ApiError') {
+          res.writeHead(data.statusCode)
         }
 
         // Send JSON data
