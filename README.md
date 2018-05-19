@@ -26,13 +26,13 @@ Operating system packages :
 
 `PORT (80 | 443 | ...)` is required and must be an integer.
 
-`HOST` is optionnal but for some cloud hosting an IP is required.
+`HOST` is optionnal but for some cloud hosting an IP or a name is required.
 
 `FORCE_SSL` is optionnal. If `true`, SSL will be activated whatever the defined PORT.
 
 `SSL_KEY` and `SSL_CERT` are optionnal. This is the path of SSL Trusted CA Signed Certificates.
 
-`DOMAIN` is optionnal. It is used to create SSL Self-Signed Certificates.
+`SSL_DOMAIN` is optionnal. It is used to create SSL Self-Signed Certificates.
 
 `KEY` is optionnal and should be used only for development purpose. It disables the crypto auto-generation access key.
 
@@ -62,9 +62,9 @@ You can use your own SSL Trusted CA Signed Certificates by defining their path i
     PORT=443 SSL_KEY=/etc/pathToSSL/ssl.key SSL_CERT=/etc/pathToSSL/ssl.cert npm start
     
 
-You can also use the SSL Self-Signed Certificates generated at each startup by defining your domain in DOMAIN :
+You can also use the SSL Self-Signed Certificates generated at each startup by defining your domain in SSL_DOMAIN :
 
-    PORT=443 DOMAIN=subdomain.domain.com npm start
+    PORT=443 SSL_DOMAIN=subdomain.domain.com npm start
 
 ## Manage Web API
 

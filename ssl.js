@@ -3,7 +3,7 @@
 const fs = require('fs')
 const config = require('./config')
 
-const DOMAIN = process.env.DOMAIN || config.DOMAIN || null
+const SSL_DOMAIN = process.env.SSL_DOMAIN || config.SSL_DOMAIN || null
 const HOST = process.env.HOST || config.HOST || null
 const SSL_KEY = process.env.SSL_KEY || config.SSL_KEY || null
 const SSL_CERT = process.env.SSL_CERT || config.SSL_CERT || null
@@ -30,7 +30,7 @@ const trusted = (key = SSL_KEY, cert = SSL_CERT) => new Promise((resolve, reject
 })
 
 const selfSigned = () => new Promise((resolve, reject) => {
-  const domain = DOMAIN || HOST || '127.0.0.1'
+  const domain = SSL_DOMAIN || HOST || '127.0.0.1'
   const cmd = `openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout ssl.key -out ssl.cert -subj "/CN=${domain}" -days 3650`
   require('child_process').exec(cmd, (err, stdout, stderr) => {
     if (err) {
