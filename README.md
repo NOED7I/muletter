@@ -44,7 +44,17 @@ Operating system packages :
 
 `STYLESHEET` is optionnal. CSS stylesheet link of the internal E-mail submitter form.
 
-`MAX_WIDTH` is optionnal. CSS max-width value of the internal E-mail submitter form, the default value is `320px`.
+`LABEL` is optionnal. Label text displayed as the form legend. Default `Email`.
+
+`LABEL_EXISTING_EMAIL` is optionnal. Displayed when the email is existing. Default `Existing Email`.
+
+`LABEL_SUBMIT_SUCCESS` is optionnal. Displayed when the email has been subscribed. Default `Subscribed Email`.
+
+`LABEL_SUBMIT_FAILURE` is optionnal. Displayed when submit failure occurs . Default `Failed Subscription`.
+
+`PLACEHOLDER` is optionnal. Placeholder input text. Default `you@example.com`.
+
+`SUBMIT` is optionnal. Submit button name text. Default `Subscribe`.
 
 ## HTTPS
 
@@ -89,13 +99,13 @@ For **customization** and **styling** you can use the environment variables like
 
     TITLE='Email List Title' PICTURE='http://urlOfMyPicture.jpg' STYLESHEET='http://urlOfMyStylesheet.css' MAX_WIDTH=325 npm start
 
-For the `STYLESHEET` prefer a **classless CSS framework** like [Barecss](http://barecss.com/), [Marx-css](https://mblode.github.io/marx/) or [Sakura.css](https://oxal.org/projects/sakura/).
+For the `STYLESHEET` you can use your own **classless CSS stylesheet** or prefer a **CSS framework** like [Barecss](http://barecss.com/) and [Concisecss](http://concisecss.com).
 
-Examples :
-- Native https://embed.plnkr.co/5GqchBwaeVs7gForcTXI/
-- Barecss https://embed.plnkr.co/eF8tW86WNqYXwBpcpZrQ/
-- Marx-css https://embed.plnkr.co/0FiJARscCetudBVxIxpC/
-- Sakura.css https://embed.plnkr.co/BDr27CzEY0Hao1GYaznw/
+    STYLESHEET=https://cdn.jsdelivr.net/npm/concise.css/dist/concise.min.css ... npm start
+
+Or
+
+    STYLESHEET=https://cdn.jsdelivr.net/npm/barecss/css/bare.min.css ... npm start
 
 ## API
 

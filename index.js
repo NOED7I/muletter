@@ -4,7 +4,12 @@ const config = require('./config.js')
 const TITLE = process.env.TITLE || config.TITLE || ''
 const PICTURE = process.env.PICTURE || config.PICTURE || ''
 const STYLESHEET = process.env.STYLESHEET || config.STYLESHEET || ''
-const MAX_WIDTH = process.env.MAX_WIDTH || config.MAX_WIDTH || ''
+const LABEL = process.env.LABEL || config.LABEL || ''
+const LABEL_EXISTING_EMAIL = process.env.LABEL_EXISTING_EMAIL || config.LABEL_EXISTING_EMAIL || ''
+const LABEL_SUBMIT_FAILURE = process.env.LABEL_SUBMIT_FAILURE || config.LABEL_SUBMIT_FAILURE || ''
+const LABEL_SUBMIT_SUCCESS = process.env.LABEL_SUBMIT_SUCCESS || config.LABEL_SUBMIT_SUCCESS || ''
+const PLACEHOLDER = process.env.PLACEHOLDER || config.PLACEHOLDER || ''
+const SUBMIT = process.env.SUBMIT || config.SUBMIT || ''
 
 module.exports = `<!DOCTYPE html>
 <html>
@@ -14,14 +19,12 @@ module.exports = `<!DOCTYPE html>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 <style>
-body {
-  margin: 0 auto !important;
-}
-h1 {
+body, h1 {
   text-align: center;
 }
-body, fieldset, img {
-  max-width: ${MAX_WIDTH || '320px'} !important;
+h1, fieldset {
+  display: inline-block;
+  text-align: left;
 }
 @media all and (max-width: 300px) {
   input, button, img {
@@ -45,9 +48,9 @@ ${STYLESHEET && `<link rel=stylesheet href=${STYLESHEET}>`}
   ${PICTURE ? `<h1><img src=${PICTURE}></h1>` : TITLE && `<h1>${TITLE}</h1>`}
   <form id=form method=post>
     <fieldset>
-      <legend><label for=email>Email</label></legend>
-      <input id=email placeholder=you@example.com type=email name=email>
-      <button name=submit type="submit">Subscribe</button>
+      <legend><label for=email>${LABEL || 'Email'}</label></legend>
+      <input id=email placeholder=${PLACEHOLDER || 'you@example.com'} type=email name=email>
+      <button name=submit type=submit>${SUBMIT || 'Subscribe'}</button>
     </fiedlset>
   </form>
   <!--[if IE]>
@@ -62,6 +65,8 @@ var form = document.getElementById('form');
 form.email.addEventListener('focus', function () {
   form.submit.disabled = '';
   form.email.style = '';
+  form.email.labels[0].style = '';
+  form.email.labels[0].innerText = '${LABEL || 'Email'}';
 });
 
 form.addEventListener('submit', function (event) {
@@ -92,10 +97,14 @@ form.addEventListener('submit', function (event) {
     form.email.disabled = '';
     if (this.status === 200) {
       form.email.style = 'color: green; border-color: green';
-      alert('Subscribed');
+      form.email.labels[0].style = 'color: green; font-style: italic';
+      form.email.labels[0].innerText = '${LABEL_SUBMIT_SUCCESS || 'Subscribed Email'}';
     } else {
-      form.email.style = 'color: red; border-color: red';
-      alert(this.status + ' Error ' + this.responseJSON.message);
+      if (this.responseJSON.message === 'Existing Email') {
+        form.email.style = 'color: red; border-color: red';
+        form.email.labels[0].style = 'color: red; font-style: italic';
+        form.email.labels[0].innerText = '${LABEL_EXISTING_EMAIL}' || this.responseJSON.message;
+      }
     }
   });
 
@@ -103,7 +112,8 @@ form.addEventListener('submit', function (event) {
     form.email.disabled = '';
     form.submit.disabled = '';
     form.email.style = 'color: orange; border-color: orange';
-    alert('Failed');
+    form.email.labels[0].style = 'color: orange; font-style: italic';
+    form.email.labels[0].innerText = '${LABEL_SUBMIT_FAILURE || 'Failed Subscription'}';
   };
 
   xhr.addEventListener('abort', onfail);
