@@ -18,7 +18,7 @@ test('add', async t => {
 
 test('add - wrong email', async t => {
   const body = { email: wrongEmail }
-  const expected = ConflictError('wrong email')
+  const expected = ConflictError('Wrong Email')
   await routes.add({ body }, 0, data => {
     t.deepEqual(data, expected)
   })
@@ -26,7 +26,7 @@ test('add - wrong email', async t => {
 
 test('add - existing email', async t => {
   const body = { email: email }
-  const expected = ConflictError('already exists')
+  const expected = ConflictError('Existing Email')
   await routes.add({ body }, 0, data => {
     t.deepEqual(data, expected)
   })
@@ -42,7 +42,7 @@ test('remove - not authenticated', async t => {
 
 test('remove - wrong email', async t => {
   const body = { email: wrongEmail }
-  const expected = ConflictError('wrong email')
+  const expected = ConflictError('Wrong Email')
   await routes.remove({ body }, 1, data => {
     t.deepEqual(data, expected)
   })
@@ -50,7 +50,7 @@ test('remove - wrong email', async t => {
 
 test('remove - not found email', async t => {
   const body = { email: 'email@provider.me' }
-  const expected = ConflictError('does not exist')
+  const expected = ConflictError('Nonexistent Email')
   await routes.remove({ body }, 1, data => {
     t.deepEqual(data, expected)
   })
@@ -74,7 +74,7 @@ test('import - not authenticated', async t => {
 
 test('import - no data', async t => {
   const body = { data: '' }
-  const expected = ConflictError('data to import is empty')
+  const expected = ConflictError('Empty Data')
   await routes.import({ body }, 1, data => {
     t.deepEqual(data, expected)
   })
@@ -93,7 +93,7 @@ test('import - no cursor', async t => {
 
 test('import - negative cursor', async t => {
   const body = { data: emails, cursor: -5 }
-  const expected = ConflictError('cursor must be a positive integer or equal to zero')
+  const expected = ConflictError('Wrong Cursor')
   await routes.import({ body }, 1, data => {
     t.deepEqual(data, expected)
   })
@@ -101,7 +101,7 @@ test('import - negative cursor', async t => {
 
 test('import - string cursor', async t => {
   const body = { data: emails, cursor: 'myCursor' }
-  const expected = ConflictError('cursor must be a positive integer or equal to zero')
+  const expected = ConflictError('Wrong Cursor')
   await routes.import({ body }, 1, data => {
     t.deepEqual(data, expected)
   })

@@ -20,7 +20,9 @@
 
 **Errors**
 
-**409** already exists
+**409** Existing Email
+
+**409** Wrong Email
 
 
 ### Remove email
@@ -45,7 +47,9 @@
 
 **Errors**
 
-**409** does not exist
+**409** Nonexistent Email
+
+**409** Wrong Email
 
 
 ### Import mailing list
@@ -73,6 +77,10 @@ It will remove all emails older than the last export date or than the cursor par
 **Errors**
 
 **401** Unauthorized
+
+**409** Empty Data
+
+**409** Wrong Cursor
 
 
 ### Export mailing list
@@ -106,7 +114,7 @@ This route is the combination of two routes : /export and /import, used in order
 
 2) Edit localy
 
-3) Import local editing with only **key** and **data** as parameters.
+3) Import local editing with **key**, **cursor** set to 0 and **data** as parameters.
 
 
 ### Empty mailing list

@@ -16,15 +16,13 @@ const initSchema = raw => {
 }
 
 const writeFile = () => {
-  fs.writeFile(dataFileName, JSON.stringify({cursor: cursor, data: data}), err => {
-    if (err) console.error(`Error: ${err}`)
-  })
+  fs.writeFile(dataFileName, JSON.stringify({ cursor, data }), err => err && console.error(`Error: ${err}`))
 }
 
 // Open JSON data
 try {
   initSchema(JSON.parse(fs.readFileSync(dataFileName)))
-} catch (ex) {
+} catch (e) {
   if (process.env.NODE_ENV !== 'test') {
     console.log(`> First start: create ${dataFileName}`, '\n')
   }
@@ -45,98 +43,100 @@ if (process.env.NODE_ENV === 'test') {
   })
 }
 
-module.exports.add = (req, auth, next) => {
-  let email = req.body.email
+module.exports = {
+  add: (req, auth, next) => {
+    let email = req.body.email
 
-  if (!email || (email && !emailRegExp.test(email))) {
-    return next(ConflictError('wrong email'))
-  }
-
-  if (data.indexOf(email) !== -1) {
-    return next(ConflictError('already exists'))
-  }
-
-  data.push(email)
-  writeFile()
-
-  next({data: email})
-}
-
-module.exports.remove = (req, auth, next) => {
-  if (!auth) {
-    return next(UnauthorizedError())
-  }
-
-  let email = req.body.email
-  let index
-
-  if (!email || (email && !emailRegExp.test(email))) {
-    return next(ConflictError('wrong email'))
-  }
-
-  index = data.indexOf(email)
-
-  if (index === -1) {
-    return next(ConflictError('does not exist'))
-  }
-
-  // Reajust cursor if higher than the index found
-  if (index < cursor) {
-    cursor -= 1
-  }
-
-  data.splice(index, 1)
-  writeFile()
-
-  next({data: email})
-}
-
-module.exports.import = (req, auth, next) => {
-  if (!auth) {
-    return next(UnauthorizedError())
-  }
-
-  if (!req.body.data) {
-    return next(ConflictError('data to import is empty'))
-  }
-
-  if (req.body.cursor !== undefined) {
-    let newCursor = parseInt(req.body.cursor, 10)
-
-    if (isNaN(newCursor) || newCursor < 0) {
-      return next(ConflictError('cursor must be a positive integer or equal to zero'))
+    if (!email || (email && !emailRegExp.test(email))) {
+      return next(ConflictError('Wrong Email'))
     }
 
-    cursor = newCursor
+    if (data.indexOf(email) !== -1) {
+      return next(ConflictError('Existing Email'))
+    }
+
+    data.push(email)
+    writeFile()
+
+    next({data: email})
+  },
+
+  remove: (req, auth, next) => {
+    if (!auth) {
+      return next(UnauthorizedError())
+    }
+
+    let email = req.body.email
+    let index
+
+    if (!email || (email && !emailRegExp.test(email))) {
+      return next(ConflictError('Wrong Email'))
+    }
+
+    index = data.indexOf(email)
+
+    if (index === -1) {
+      return next(ConflictError('Nonexistent Email'))
+    }
+
+    // Reajust cursor if higher than the index found
+    if (index < cursor) {
+      cursor -= 1
+    }
+
+    data.splice(index, 1)
+    writeFile()
+
+    next({data: email})
+  },
+
+  import: (req, auth, next) => {
+    if (!auth) {
+      return next(UnauthorizedError())
+    }
+
+    if (!req.body.data) {
+      return next(ConflictError('Empty Data'))
+    }
+
+    if (req.body.cursor !== undefined) {
+      let newCursor = parseInt(req.body.cursor, 10)
+
+      if (isNaN(newCursor) || newCursor < 0) {
+        return next(ConflictError('Wrong Cursor'))
+      }
+
+      cursor = newCursor
+    }
+
+    data = data.slice(0, cursor)
+    data = data.concat(req.body.data.split('\n'))
+    cursor = 0
+    writeFile()
+
+    next({data: data.join('\n')})
+  },
+
+  export: (req, auth, next) => {
+    if (!auth) {
+      return next(UnauthorizedError())
+    }
+
+    cursor = data.length
+    writeFile()
+
+    next({data: data.join('\n')})
+  },
+
+  empty: (req, auth, next) => {
+    if (!auth) {
+      return next(UnauthorizedError())
+    }
+
+    cursor = 0
+    data = []
+    writeFile()
+
+    next({data: ''})
   }
-
-  data = data.slice(0, cursor)
-  data = data.concat(req.body.data.split('\n'))
-  cursor = 0
-  writeFile()
-
-  next({data: data.join('\n')})
-}
-
-module.exports.export = (req, auth, next) => {
-  if (!auth) {
-    return next(UnauthorizedError())
-  }
-
-  cursor = data.length
-  writeFile()
-
-  next({data: data.join('\n')})
-}
-
-module.exports.empty = (req, auth, next) => {
-  if (!auth) {
-    return next(UnauthorizedError())
-  }
-
-  cursor = 0
-  data = []
-  writeFile()
-
-  next({data: ''})
 }
