@@ -1,4 +1,4 @@
-# MULIST server API
+# MULETTER server API
 ### Add email
 
 **Request**
