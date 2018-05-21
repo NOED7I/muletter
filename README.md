@@ -1,12 +1,12 @@
-#   MULIST server
+#   MULETTER server
 
-**MULIST server** is a minimalist email list driven by a Web API running on a database-less Node.js app using a JSON file as data storage.
+**MULETTER server** is a minimalist email list driven by a Web API running on a database-less Node.js app using a JSON file as data storage.
 
-[![Build Status](https://travis-ci.org/kimihub/mulist-server.svg?branch=master)](https://travis-ci.org/kimihub/mulist-server)
+[![Build Status](https://travis-ci.org/kimihub/muletter-server.svg?branch=master)](https://travis-ci.org/kimihub/muletter-server)
 
 ## Server requirements
 
-You need a http web server or a cloud hosting account to deploy MULIST server.
+You need a http web server or a cloud hosting account to deploy MULETTER server.
 
 Here are the minimal requirements of the server :
 
@@ -22,7 +22,7 @@ Operating system packages :
 
 ## Configuration
 
-**Environment variables** are used to configure MULIST server. You can also use `config.js` if in some cases you cannot set them.
+**Environment variables** are used to configure MULETTER server. You can also use `config.js` if in some cases you cannot set them.
 
 `PORT (80 | 443 | ...)` is required and must be an integer.
 
@@ -78,7 +78,7 @@ You can also use the SSL Self-Signed Certificates generated at each startup by d
 
 ## Manage Web API
 
-You need to install **MULIST cli** on your computer to manage MULIST server : https://github.com/kimihub/mulist-cli
+You need to install **MULIST cli** on your computer to manage MULETTER server : https://github.com/kimihub/mulist-cli
 
 You also need an **access key** which is automatically generated with `crypto` at each startup and printed on the app logs like bellow :
 
@@ -109,4 +109,4 @@ Or
 
 ## API
 
-https://github.com/kimihub/mulist-server/blob/master/docs/api.md
+https://github.com/kimihub/muletter-server/blob/master/docs/api.md
