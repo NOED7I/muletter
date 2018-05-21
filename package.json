@@ -1,6 +1,6 @@
 {
-  "name": "mulist-server",
-  "version": "0.5.0",
+  "name": "muletter-server",
+  "version": "0.6.0",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -17,10 +17,10 @@
     "url": "https://github.com/kimihub"
   },
   "license": "GPL-3.0",
-  "homepage": "https://github.com/kimihub/mulist-server",
+  "homepage": "https://github.com/kimihub/muletter-server",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kimihub/mulist-server"
+    "url": "https://github.com/kimihub/muletter-server"
   },
   "engines": {
     "node": ">=9.4.0"
@@ -33,8 +33,8 @@
   },
   "main": "server.js",
   "scripts": {
-    "test": "NODE_ENV=test PORT=8080 ava test/*.test.js --color -v",
-    "test-watch": "NODE_ENV=test PORT=8080 ava test/*.test.js --watch --color -v",
+    "test": "NODE_ENV=test HTTP_PORT=8080 ava test/*.test.js --color -v",
+    "test-watch": "NODE_ENV=test HTTP_PORT=8080 ava test/*.test.js --watch --color -v",
     "standard": "standard --fix --verbose *.js test/*.js | snazzy",
     "precommit": "npm run standard && npm run test"
   },

@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/kimihub/muletter-server.svg?branch=master)](https://travis-ci.org/kimihub/muletter-server)
 
-## Server requirements
+## Requirements
 
 You need a http web server or a cloud hosting account to deploy MULETTER server.
 
@@ -13,68 +13,35 @@ Here are the minimal requirements of the server :
 - **Node.js >= 9**
 - **Persistent storage** is obviously required to keep JSON file data integrity
 
-Some Node.js modules are required in some cases :
-- **crypto** support to generate an **access key**
-- **https** support to handle HTTPS with Node.js
+## Getting Start
 
-Operating system packages :
-- **openssl** installed to generate Self-Signed SSL certificates if needed
+Here is a fast and simple pre-configuration before deploying MULETTER server.
 
-## Configuration
+1) Download the repository
 
-**Environment variables** are used to configure MULETTER server. You can also use `config.js` if in some cases you cannot set them.
+2) Edit `config.js` 
+    
+    **HTTP configuration**
 
-`PORT (80 | 443 | ...)` is required and must be an integer.
+    HTTPS is activated by listening the default `HTTP_PORT` 443.
 
-`HOST` is optionnal but for some cloud hosting an IP or a name is required.
+    SSL Trusted CA Signed Certificates path must be defined in `SSL_KEY` and `SSL_CERT`. If one of them are missing, SSL Self-Signed Certificates will be generate.
 
-`FORCE_SSL` is optionnal. If `true`, SSL will be activated whatever the defined PORT.
+    Some cloud hosting may provide (Heroku, Openshift ...) a HTTPS support, in that case you only need to define the `HTTP_PORT` used by the instance.
 
-`SSL_KEY` and `SSL_CERT` are optionnal. This is the path of SSL Trusted CA Signed Certificates.
+    
+    **E-Mail Submitter configuration**
 
-`SSL_DOMAIN` is optionnal. It is used to create SSL Self-Signed Certificates.
-
-`KEY` is optionnal and should be used only for development purpose. It disables the crypto auto-generation access key.
-
-`DATA_PATH` is optionnal. You can define it if your persistent volume storage has a specific path.
-
-`TITLE` is optionnal. Title string displayed as the head `<title>` and `<h1>` of the internal E-mail submitter form.
-
-`PICTURE` is optionnal. Image link displayed as the head `<img>` of the internal E-mail submitter form.
-
-`STYLESHEET` is optionnal. CSS stylesheet link of the internal E-mail submitter form.
-
-`LABEL` is optionnal. Label text displayed as the form legend. Default `Email`.
-
-`LABEL_EXISTING_EMAIL` is optionnal. Displayed when the email is existing. Default `Existing Email`.
-
-`LABEL_SUBMIT_SUCCESS` is optionnal. Displayed when the email has been subscribed. Default `Subscribed Email`.
-
-`LABEL_SUBMIT_FAILURE` is optionnal. Displayed when submit failure occurs . Default `Failed Subscription`.
-
-`PLACEHOLDER` is optionnal. Placeholder input text. Default `you@example.com`.
-
-`SUBMIT` is optionnal. Submit button name text. Default `Subscribe`.
-
-## HTTPS
-
-To secure the Web API with HTTPS, the common practice is to use nginx to handle SSL certificates or HTTPS support provided with cloud hosting (Heroku, Openshift ...) but you might want to use HTTPS support of Node.js.
-
-Then activate SSL by listening the port 443 or forcing SSL with environment variables :
-
-    PORT=443 npm start
-    // or
-    FORCE_SSL=true PORT=8080 npm start
-
-
-You can use your own SSL Trusted CA Signed Certificates by defining their path in SSL_KEY and SSL_CERT :
-
-    PORT=443 SSL_KEY=/etc/pathToSSL/ssl.key SSL_CERT=/etc/pathToSSL/ssl.cert npm start
+    A `TITLE` or a `PICTURE` url may be defined to personalize the submitter.
     
 
-You can also use the SSL Self-Signed Certificates generated at each startup by defining your domain in SSL_DOMAIN :
+5) **Deployment** 
 
-    PORT=443 SSL_DOMAIN=subdomain.domain.com npm start
+
+## E-Mail Submitter URL
+    
+https://urlOfMyServer.com
+
 
 ## Manage Web API
 
@@ -85,27 +52,54 @@ You also need an **access key** which is automatically generated with `crypto` a
     > Access key : <hash>
     > Listening on port <port>
 
-You can also define it yourself with environment variables :
 
-    KEY=myKEY npm start
+## Advanced configuration
 
-## Internal E-mail submitter form
+**Environment variables** and then `config.js` are used to configure MULETTER server.
 
-If CORS cannot be enabled on your cloud hosting, you may use the internal form by linking the url of the app : https://urlOfMyApp.com
+### HTTP(S)
 
-More about CORS (Cross-origin Resource Sharing) : https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+`HTTP_PORT` (Default `443`) and required for some cloud hosting
 
-For **customization** and **styling** you can use the environment variables like bellow :
+`HTTP_HOST` required for some cloud hosting
 
-    TITLE='Email List Title' PICTURE='http://urlOfMyPicture.jpg' STYLESHEET='http://urlOfMyStylesheet.css' MAX_WIDTH=325 npm start
+### SSL
 
-For the `STYLESHEET` you can use your own **classless CSS stylesheet** or prefer a **CSS framework** like [Barecss](http://barecss.com/) and [Concisecss](http://concisecss.com).
+`FORCE_SSL` if `true` SSL will be activated whatever the defined HTTP_PORT.
 
-    STYLESHEET=https://cdn.jsdelivr.net/npm/concise.css/dist/concise.min.css ... npm start
+`SSL_KEY` and `SSL_CERT` path of SSL Trusted CA Signed Certificates.
 
-Or
+`SSL_DOMAIN` used to create SSL Self-Signed Certificates.
 
-    STYLESHEET=https://cdn.jsdelivr.net/npm/barecss/css/bare.min.css ... npm start
+### Data Storage
+
+`DATA_PATH` used if the persistent volume storage has a specific path.
+
+### API Access
+
+`ACCESS_KEY` should be used only for development purpose. It disables the crypto auto-generation access key.
+
+
+### E-mail Submitter
+
+`TITLE` displayed as the head `<title>` and `<h1>`.
+
+`PICTURE` image link displayed as the head `<img>`.
+
+`STYLESHEET` CSS stylesheet or **classless CSS framework** link.
+
+`LABEL` (Default `Email`) label text displayed as the form legend.
+
+`LABEL_EXISTING_EMAIL` (Default `Existing Email`) displayed when the email is existing.
+
+`LABEL_SUBMIT_SUCCESS` (Default `Subscribed Email`) displayed when the email has been subscribed.
+
+`LABEL_SUBMIT_FAILURE` (Default `Failed Subscription`) displayed when submit fails.
+
+`PLACEHOLDER` (Default `you@example.com`) placeholder input text.
+
+`SUBMIT` (Default `Subcribe`) submit button name text.
+
 
 ## API
 

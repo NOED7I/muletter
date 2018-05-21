@@ -2,13 +2,13 @@
 
 const test = require('ava')
 
-const { PORT, KEY, HOST } = require('../server')
+const { HTTP_PORT, ACCESS_KEY, HTTP_HOST } = require('../server')
 
 const request = (method, path, body = {}) => new Promise((resolve, reject) => {
   const data = require('querystring').stringify(body)
   const options = {
-    hostname: HOST || '127.0.0.1',
-    port: PORT,
+    hostname: HTTP_HOST || '127.0.0.1',
+    port: HTTP_PORT,
     method,
     path,
     headers: {
@@ -31,9 +31,9 @@ const request = (method, path, body = {}) => new Promise((resolve, reject) => {
   }).end(data)
 })
 
-test('valid generated KEY', t => {
-  t.true(typeof KEY === 'string')
-  t.is(KEY.length, require('crypto').randomBytes(20).toString('hex').length)
+test('valid generated ACCESS_KEY', t => {
+  t.true(typeof ACCESS_KEY === 'string')
+  t.is(ACCESS_KEY.length, require('crypto').randomBytes(20).toString('hex').length)
 })
 
 test('GET / - should return a string', async t => {
