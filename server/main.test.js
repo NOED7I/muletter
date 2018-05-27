@@ -2,13 +2,13 @@
 
 const test = require('ava')
 
-const { HTTP_PORT, ACCESS_KEY, HTTP_HOST } = require('../server')
+const { PORT, HOST } = require('./main')
 
 const request = (method, path, body = {}) => new Promise((resolve, reject) => {
   const data = require('querystring').stringify(body)
   const options = {
-    hostname: HTTP_HOST || '127.0.0.1',
-    port: HTTP_PORT,
+    hostname: HOST || '127.0.0.1',
+    port: PORT,
     method,
     path,
     headers: {
@@ -31,18 +31,8 @@ const request = (method, path, body = {}) => new Promise((resolve, reject) => {
   }).end(data)
 })
 
-test('valid generated ACCESS_KEY', t => {
-  t.true(typeof ACCESS_KEY === 'string')
-  t.is(ACCESS_KEY.length, require('crypto').randomBytes(20).toString('hex').length)
-})
-
-test('GET / - should return a string', async t => {
-  const res = await request('GET', '/')
-  t.true(typeof res === 'string')
-})
-
-test('POST /add { email: email@provider.com } - should return a JSON response', async t => {
-  const res = await request('POST', '/add', { email: 'email@provider.com' })
+test.skip('POST /subscribers { email: email@provider.com } - should return a JSON response', async t => {
+  const res = await request('POST', '/subscribers', { email: 'email@provider.com' })
   try {
     JSON.parse(res)
     t.pass()

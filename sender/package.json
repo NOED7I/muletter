@@ -1,0 +1,9 @@
+{
+    "name": "sender",
+    "dependencies": {
+        "nodemailer": "^4.6.5"
+    },
+    "engines": {
+        "node": ">=10.2.1"
+    }
+}

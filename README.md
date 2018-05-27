@@ -10,95 +10,65 @@ You need a http web server or a cloud hosting account to deploy MULETTER server.
 
 Here are the minimal requirements of the server :
 
-- **Node.js >= 9**
+- **Node.js >= 10**
 - **Persistent storage** is obviously required to keep JSON file data integrity
 
 ## Getting Start
 
-Here is a fast and simple pre-configuration before deploying MULETTER server.
+Fast and simple deployment MULETTER server.
 
 1) Download the repository
 
-2) Edit `config.js` 
-    
-    **HTTP configuration**
+2) Deploy on a **Openode.io FaaS serverless** and configure `./db` as the **storage area** or pre-configure the server for a classic cloud hosting, go to **Advanced server configuration**.
 
-    HTTPS is activated by listening the default `HTTP_PORT` 443.
+# Connection to the Web API
 
-    SSL Trusted CA Signed Certificates path must be defined in `SSL_KEY` and `SSL_CERT`. If one of them are missing, SSL Self-Signed Certificates will be generate.
+You need an **API private key** which is automatically generated with `crypto` at the first startup.
 
-    Some cloud hosting may provide (Heroku, Openshift ...) a HTTPS support, in that case you only need to define the `HTTP_PORT` used by the instance.
+Get the server status :
 
-    
-    **E-Mail Submitter configuration**
+    npm run get-status
 
-    A `TITLE` or a `PICTURE` url may be defined to personalize the submitter.
-    
+    Muletter-server version 0.7.3
+    Number of subscribers: 48
+    Private Key: EsvLcQTcwflXbKk/1MSf3umI1gE=
+    Public Key: hc1x0Yp3KpwzURo5YO81mtl454U=
 
-5) **Deployment** 
+Change the API access keys :
 
+    npm run randomize-keys
 
-## E-Mail Submitter URL
-    
-https://urlOfMyServer.com
-
-
-## Manage Web API
-
-You need to install **MULIST cli** on your computer to manage MULETTER server : https://github.com/kimihub/mulist-cli
-
-You also need an **access key** which is automatically generated with `crypto` at each startup and printed on the app logs like bellow :
-
-    > Access key : <hash>
-    > Listening on port <port>
+    Private Key: EsvLcQTcwflXbKk/1MSf3umI1gE=
+    Public Key: hc1x0Yp3KpwzURo5YO81mtl454U=
 
 
-## Advanced configuration
+## Advanced Web API Management
 
-**Environment variables** and then `config.js` are used to configure MULETTER server.
+You need to install **MULETTER cli** on your computer to manage MULETTER server : https://github.com/kimihub/muletter-cli
+   
+## Advanced server configuration
+
+HTTPS is activated by listening the port 443.
+
+SSL Trusted CA Signed Certificates path must be defined. If one of them are missing, SSL Self-Signed Certificates will be generate.
+
+Some cloud hosting may provide (Heroku, Openshift ...) a HTTPS support, in that case you only need to define the environment variable `PORT` used by the instance. 
+
+**Environment variables** and then `server/config.js` are used to configure MULETTER server.
 
 ### HTTP(S)
 
-`HTTP_PORT` (Default `443`) and required for some cloud hosting
+`PORT` (Default `443`) and required for some cloud hosting
 
-`HTTP_HOST` required for some cloud hosting
+`HOST` required for some cloud hosting
 
 ### SSL
 
-`FORCE_SSL` if `true` SSL will be activated whatever the defined HTTP_PORT.
+`FORCE_SSL` if `true` SSL will be activated whatever the defined PORT.
 
 `SSL_KEY` and `SSL_CERT` path of SSL Trusted CA Signed Certificates.
 
 `SSL_DOMAIN` used to create SSL Self-Signed Certificates.
-
-### Data Storage
-
-`DATA_PATH` used if the persistent volume storage has a specific path.
-
-### API Access
-
-`ACCESS_KEY` should be used only for development purpose. It disables the crypto auto-generation access key.
-
-
-### E-mail Submitter
-
-`TITLE` displayed as the head `<title>` and `<h1>`.
-
-`PICTURE` image link displayed as the head `<img>`.
-
-`STYLESHEET` CSS stylesheet or **classless CSS framework** link.
-
-`LABEL` (Default `Email`) label text displayed as the form legend.
-
-`LABEL_EXISTING_EMAIL` (Default `Existing Email`) displayed when the email is existing.
-
-`LABEL_SUBMIT_SUCCESS` (Default `Subscribed Email`) displayed when the email has been subscribed.
-
-`LABEL_SUBMIT_FAILURE` (Default `Failed Subscription`) displayed when submit fails.
-
-`PLACEHOLDER` (Default `you@example.com`) placeholder input text.
-
-`SUBMIT` (Default `Subcribe`) submit button name text.
 
 
 ## API

@@ -3,24 +3,30 @@
 
 **Request**
 
-    POST  /add
+    POST  /subscribers
+
+
+**Headers**
+
+    Authorization Basic public-key
+    
 
 **Parameters**
 
     {
-      "email": "user@domail.com"
+      "email": "user@provider.com"
     }
 
 **Return**
 
     {
-      "data": "user@domail.com"
+      "data": "user@provider.com"
     }
 
 
 **Errors**
 
-**409** Existing Email
+**401** Unauthorized
 
 **409** Wrong Email
 
@@ -29,56 +35,61 @@
 
 **Request**
 
-    POST  /remove
+    DELETE  /subscribers
+
+**Headers**
+
+    Authorization Basic public-key
 
 **Parameters**
 
     {
-      "key": "yourKey",
-      "email": "user@domail.com"
+      "email": "user@provider.com"
     }
 
 **Return**
 
     {
-      "data": "user@domail.com"
+      "data": "user@provider.com"
     }
 
 
 **Errors**
 
-**409** Nonexistent Email
+**401** Unauthorized
 
 **409** Wrong Email
 
 
 ### Import mailing list
 
-It will remove all emails older than the last export date or than the cursor parameter. Set cursor to **0** to cancel the last export. **This route should be used only to sync a local mailing list, look at the /edit virtual route bellow**. 
+It will remove all existing emails and replace them with the emails parameter.
 
 **Request**
 
-      POST /import
+      PUT /subscribers
+
+**Headers**
+
+    Authorization Basic private-key
 
 **Parameters**
 
     {
-      "key": "yourKey",
-      "cursor": "2", // not required
-      "data":  "kim@gmail.com\nsam@outlook.com\nseif785@yahoo.com\n..."
+      "import":  "user1@provider.io\nuser2@provider.io\nuser3@provider.io\n..."
     }
 
 **Return**
 
     {
-      "data":  "kim@gmail.com\nsam@outlook.com\nseif785@yahoo.com\n..."
+      "data":  "user1@provider.io\nuser2@provider.io\nuser3@provider.io\n..."
     }
 
 **Errors**
 
 **401** Unauthorized
 
-**409** Empty Data
+**204** No Content
 
 **409** Wrong Cursor
 
@@ -87,18 +98,16 @@ It will remove all emails older than the last export date or than the cursor par
 
 **Request**
 
-      POST /export
+        GET /subscribers
 
-**Parameters**
+**Headers**
 
-    {
-      "key": "yourKey"
-    }
+    Authorization Basic private-key
 
 **Return**
 
     {
-      "data":  "kim@gmail.com\nsam@outlook.com\nseif785@yahoo.com\n..."
+      "emails":  "user1@provider.io\nuser2@provider.io\nuser3@provider.io\n..."
     }
 
 **Errors**
@@ -106,35 +115,65 @@ It will remove all emails older than the last export date or than the cursor par
 **401** Unauthorized
 
 
-### Edit mailing list (virtual route)
-
-This route is the combination of two routes : /export and /import, used in order to sync a local mailing list.
-
-1) Export
-
-2) Edit localy
-
-3) Import local editing with **key**, **cursor** set to 0 and **data** as parameters.
-
-
-### Empty mailing list
+### BCC Sender
 
 **Request**
 
-      POST /empty
+      POST /sender
+
+**Headers**
+
+    Authorization Basic private-key
 
 **Parameters**
 
     {
-      "key": "yourKey"
+      "service": "service-name",
+      "user": "smtp-user-email",
+      "password": "smtp-user-password", // used if token is not provided
+      "token": "oauth2-token": // OAuth 2 token
+      "body": "letter-body",
+      "test": "true | false" // used for tests
     }
 
 **Return**
 
     {
-      "data":  ""
+      "data": {}
     }
 
 **Errors**
+
+**409** Conflict
+
+**401** Unauthorized
+
+
+### Get Status Infos
+
+**Request**
+
+      GET /status
+
+**Headers**
+
+    Authorization Basic private-key
+
+**Return**
+
+    {
+      "data":  {
+          "count": "nb-subscribers",
+          "keys": {
+              "public": "public-key",
+              "private": "private-key"
+          },
+          "version": "muletter-version"
+      }
+    }
+
+**Errors**
+
+**409** Conflict
 
 **401** Unauthorized

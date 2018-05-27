@@ -2,7 +2,7 @@
 
 const test = require('ava')
 const fs = require('fs')
-const ssl = require('../ssl')
+const ssl = require('./ssl')
 
 test('create SSL Self-Signed certs', async t => {
   const { key, cert } = await ssl.selfSigned()

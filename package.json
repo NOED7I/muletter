@@ -1,6 +1,6 @@
 {
   "name": "muletter-server",
-  "version": "0.6.0",
+  "version": "0.7.4",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -23,7 +23,7 @@
     "url": "https://github.com/kimihub/muletter-server"
   },
   "engines": {
-    "node": ">=9.4.0"
+    "node": ">=10.2.1"
   },
   "devDependencies": {
     "ava": "^1.0.0-beta.4",
@@ -31,12 +31,16 @@
     "snazzy": "^7.0.0",
     "standard": "^10.0.3"
   },
-  "main": "server.js",
+  "main": "server/main.js",
   "scripts": {
-    "test": "NODE_ENV=test HTTP_PORT=8080 ava test/*.test.js --color -v",
-    "test-watch": "NODE_ENV=test HTTP_PORT=8080 ava test/*.test.js --watch --color -v",
+    "start": "node server/main.js",
+    "test": "NODE_ENV=test PORT=8080 ava **/*.test.js --color -v",
+    "test-watch": "NODE_ENV=test PORT=8080 ava **/*.test.js --watch --color -v",
     "standard": "standard --fix --verbose *.js test/*.js | snazzy",
-    "precommit": "npm run standard && npm run test"
+    "precommit": "npm run standard && npm run test",
+    "postinstall": "cd sender; npm install",
+    "get-status": "node --no-warnings scripts/get-status.js",
+    "randomize-keys": "node --no-warnings scripts/randomize-keys.js"
   },
   "dependencies": {}
 }

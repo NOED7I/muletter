@@ -1,0 +1,7 @@
+{
+  "name": "status",
+  "dependencies": {},
+  "engines": {
+    "node": ">=10.2.1"
+  }
+}
