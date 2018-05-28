@@ -2,7 +2,7 @@
 
 const { MethodNotAllowedError, NotFoundError } = require('../utils/errors')
 
-module.exports = async (req, next = () => {}) => {
+module.exports = (req, callback = () => {}) => {
   let route
   let parsedUrl = require('url').parse(req.url).pathname
   let methods
@@ -20,18 +20,18 @@ module.exports = async (req, next = () => {}) => {
   route = parsedUrl.split('/').shift()
 
   if (!['GET', 'POST', 'DELETE', 'PUT'].includes(req.method)) {
-    return next(MethodNotAllowedError())
+    return callback(MethodNotAllowedError())
   }
 
   try {
-    methods = require(`./${route}`)
+    methods = require(`../${route}`)
   } catch (e) {
-    next(NotFoundError())
+    callback(NotFoundError())
   }
 
   if (!methods || typeof methods[req.method] === 'undefined') {
-    return next(NotFoundError())
+    return callback(NotFoundError())
   }
 
-  next(await methods[req.method](req))
+  callback(methods[req.method](req))
 }

@@ -1,6 +1,7 @@
 'use strict'
 
 const test = require('ava')
+const db = require('../utils/db')
 
 const { PORT, HOST } = require('./main')
 
@@ -31,7 +32,13 @@ const request = (method, path, body = {}) => new Promise((resolve, reject) => {
   }).end(data)
 })
 
-test.skip('POST /subscribers { email: email@provider.com } - should return a JSON response', async t => {
+test.before(async () => {
+  const { createKeys } = require('../utils/helpers')
+  await db.write('keys', createKeys())
+  await db.open()
+})
+
+test('POST /subscribers { email: email@provider.com } - should return a JSON response', async t => {
   const res = await request('POST', '/subscribers', { email: 'email@provider.com' })
   try {
     JSON.parse(res)
@@ -44,4 +51,8 @@ test.skip('POST /subscribers { email: email@provider.com } - should return a JSO
 test('UPDATE /add {} - should return Bad Request Error', async t => {
   const res = await request('UPDATE', '/add')
   t.is(res.statusCode, 400)
+})
+
+test.after(async () => {
+  await db.drop()
 })
