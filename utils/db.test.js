@@ -1,17 +1,23 @@
 'use strict'
 
 const test = require('ava')
+const fs = require('fs')
 const db = require('./db')
 
-test.serial('db/data.json creation', async t => {
-  const fs = require('fs') 
+test.before(async () => {
+  const { createKeys } = require('./helpers')
+  await db.write('keys', createKeys())
+})
+
+test.serial('db/list.json creation', async t => {
+  const { access } = fs.promises
   try {
     await db.open()
-    fs.accessSync(require('path').resolve(__dirname, '../db/data.test.json'), fs.constants.F_OK)
+    await access(db.path('list'), fs.constants.F_OK)
+    t.pass()
   } catch (e) {
-    t.fail(e) 
+    t.fail(e)
   }
-  t.pass()
 })
 
 test.serial('add / del list item', async t => {
@@ -23,27 +29,31 @@ test.serial('add / del list item', async t => {
 })
 
 test.serial('import / export list items', async t => {
-  const fs = require('fs').promises
+  const { readFile } = fs.promises
   const data = await db.open()
   const expected = ['item-1', 'item-2', 'item-3']
   data.import(expected)
   t.deepEqual(data.export(), expected)
   try {
-    const {list} = JSON.parse(await fs.readFile(require('path').resolve(__dirname, '../db/data.test.json')))
+    const list = JSON.parse(await readFile(db.path('list')))
     t.deepEqual(list, expected)
-  } catch(e) {
+  } catch (e) {
     t.fail(e)
   }
 })
 
-test.serial('keys generating', async t => {
-  const fs = require('fs').promises
+test.serial('get keys', async t => {
+  const { readFile } = fs.promises
   const data = await db.open()
   const expected = data.keys()
   try {
-    const {keys} = JSON.parse(await fs.readFile(require('path').resolve(__dirname, '../db/data.test.json')))
+    const keys = JSON.parse(await readFile(db.path('keys')))
     t.deepEqual(keys, expected)
-  } catch(e) {
+  } catch (e) {
     t.fail(e)
   }
+})
+
+test.after(async () => {
+  await db.drop()
 })

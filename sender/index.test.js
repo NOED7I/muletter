@@ -5,6 +5,11 @@ const db = require('../utils/db')
 const sender = require('./index')
 const { UnauthorizedError, ConflictError } = require('../utils/errors')
 
+test.before(async () => {
+  const { createKeys } = require('../utils/helpers')
+  await db.write('keys', createKeys())
+})
+
 test.serial('POST -- unauthorized', async t => {
   const data = await db.open()
   const headers = {
@@ -93,11 +98,6 @@ test.serial('POST -- empty body', async t => {
   t.deepEqual(output, ConflictError('Empty body'))
 })
 
-
-/*
-test('POST -- test', async t => {
-    
+test.after(async () => {
+  await db.drop()
 })
-
-test('POST')
-*/

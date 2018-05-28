@@ -1,6 +1,6 @@
 {
   "name": "muletter-server",
-  "version": "0.7.4",
+  "version": "0.8.1",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -34,13 +34,12 @@
   "main": "server/main.js",
   "scripts": {
     "start": "node server/main.js",
-    "test": "NODE_ENV=test PORT=8080 ava **/*.test.js --color -v",
-    "test-watch": "NODE_ENV=test PORT=8080 ava **/*.test.js --watch --color -v",
-    "standard": "standard --fix --verbose *.js test/*.js | snazzy",
+    "test": "PORT=8080 ava -s --color -v",
+    "test-watch": "PORT=8080 ava -s --watch --color -v",
+    "standard": "standard --fix --verbose **/*.js | snazzy",
     "precommit": "npm run standard && npm run test",
     "postinstall": "cd sender; npm install",
-    "get-status": "node --no-warnings scripts/get-status.js",
-    "randomize-keys": "node --no-warnings scripts/randomize-keys.js"
+    "init": "node --no-warnings scripts/init.js"
   },
   "dependencies": {}
 }

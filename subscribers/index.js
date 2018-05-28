@@ -10,14 +10,14 @@ module.exports = {
     if (!checkAuthKey(req, data.keys(), 'public')) {
       return UnauthorizedError()
     }
-    
+
     const { email } = req.body
 
     // Add if valid and non-existent email
     if (isEmail(email) && data.indexOf(email) === -1) {
       data.add(email)
     }
-    
+
     return { data: email }
   },
 
@@ -26,13 +26,13 @@ module.exports = {
     if (!checkAuthKey(req, data.keys(), 'public')) {
       return UnauthorizedError()
     }
-    
+
     const { email } = req.body
     const index = data.indexOf(email)
 
     // Delete if valid and existing email
     if (isEmail(email) && index !== -1) {
-      data.del(index) 
+      data.del(index)
     }
 
     return { data: email }
@@ -50,7 +50,7 @@ module.exports = {
     }
 
     data.import(emails.split('\n'))
-    return { data: emails } 
+    return { data: emails }
   },
 
   GET: async (req) => {

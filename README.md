@@ -23,29 +23,14 @@ Fast and simple deployment MULETTER server.
 
 # Connection to the Web API
 
-You need an **API private key** which is automatically generated with `crypto` at the first startup.
+Initialize the **API access keys** :
 
-Get the server status :
+    npm run init
 
-    npm run get-status
-
-    Muletter-server version 0.7.3
-    Number of subscribers: 48
-    Private Key: EsvLcQTcwflXbKk/1MSf3umI1gE=
-    Public Key: hc1x0Yp3KpwzURo5YO81mtl454U=
-
-Change the API access keys :
-
-    npm run randomize-keys
-
-    Private Key: EsvLcQTcwflXbKk/1MSf3umI1gE=
-    Public Key: hc1x0Yp3KpwzURo5YO81mtl454U=
+    Private Key : EsvLcQTcwflXbKk/1MSf3umI1gE=
+    Public Key : hc1x0Yp3KpwzURo5YO81mtl454U=
 
 
-## Advanced Web API Management
-
-You need to install **MULETTER cli** on your computer to manage MULETTER server : https://github.com/kimihub/muletter-cli
-   
 ## Advanced server configuration
 
 HTTPS is activated by listening the port 443.

@@ -7,7 +7,7 @@ const { UnauthorizedError, ConflictError } = require('../utils/errors')
 
 module.exports = {
   POST: async (req) => {
-    const data = await db.open() 
+    const data = await db.open()
     if (!checkAuthKey(req, data.keys(), 'private')) {
       return UnauthorizedError()
     }
@@ -47,13 +47,13 @@ module.exports = {
       from: user,
       to: user,
       // If not testing add the mailing list to bcc
-      ...(!test && { bcc: data.export() }) ||  {},
+      ...(!test && { bcc: data.export() }) || {},
       subject,
       html: body
     }
 
     const transporter = nodemailer.createTransport({ service, auth })
-    const sendMail = () => new Promise ((resolve, reject) => {
+    const sendMail = () => new Promise((resolve, reject) => {
       transporter.sendMail(message, (err) => {
         if (err) {
           return reject(err)

@@ -5,6 +5,11 @@ const db = require('../utils/db')
 const status = require('./index')
 const { UnauthorizedError } = require('../utils/errors')
 
+test.before(async () => {
+  const { createKeys } = require('../utils/helpers')
+  await db.write('keys', createKeys())
+})
+
 test.serial('GET -- unauthorized', async t => {
   const data = await db.open()
   const headers = {
@@ -22,8 +27,12 @@ test.serial('GET', async t => {
   const expected = {
     count: data.export().length,
     keys: data.keys(),
-    version: require('../package.json').version 
+    version: require('../package.json').version
   }
   const output = await status.GET({ headers })
   t.deepEqual(output, expected)
+})
+
+test.after(async () => {
+  await db.drop()
 })
