@@ -1,4 +1,4 @@
-# MULETTER server API
+# MULETTER API
 ### Add email
 
 **Request**

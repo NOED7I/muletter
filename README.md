@@ -1,12 +1,12 @@
-#   MULETTER server
+# MULETTER
 
-**MULETTER server** is a minimalist email list driven by a Web API running on a database-less Node.js app using a JSON file as data storage.
+**MULETTER** is a minimalist email list driven by a Web API running on a database-less Node.js app using a JSON file as data storage.
 
-[![Build Status](https://travis-ci.org/kimihub/muletter-server.svg?branch=master)](https://travis-ci.org/kimihub/muletter-server)
+[![Build Status](https://travis-ci.org/kimihub/muletter.svg?branch=master)](https://travis-ci.org/kimihub/muletter)
 
 ## Requirements
 
-You need a http web server or a cloud hosting account to deploy MULETTER server.
+You need a http web server or a cloud hosting account to deploy MULETTER.
 
 Here are the minimal requirements of the server :
 
@@ -15,7 +15,7 @@ Here are the minimal requirements of the server :
 
 ## Getting Start
 
-Fast and simple deployment MULETTER server.
+Fast and simple deployment MULETTER.
 
 1) Download the repository
 
@@ -28,7 +28,6 @@ Fast and simple deployment MULETTER server.
 
 
 3) Deploy on a **Openode.io FaaS serverless** and configure `./db` as the **storage area** or pre-configure the server for a classic cloud hosting, go to **Advanced server configuration**.
-
 
 ## Advanced server configuration
 
@@ -57,4 +56,4 @@ Some cloud hosting may provide (Heroku, Openshift ...) a HTTPS support, in that 
 
 ## API
 
-https://github.com/kimihub/muletter-server/blob/master/docs/api.md
+https://github.com/kimihub/muletter/blob/master/docs/api.md
