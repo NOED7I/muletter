@@ -1,6 +1,6 @@
 {
   "name": "muletter-server",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -39,7 +39,8 @@
     "standard": "standard --fix --verbose **/*.js | snazzy",
     "precommit": "npm run standard && npm run test",
     "postinstall": "cd sender; npm install",
-    "init": "node --no-warnings scripts/init.js"
+    "keys": "node --no-warnings scripts/keys.js",
+    "keys-update": "node --no-warnings scripts/keys.js --update"
   },
   "dependencies": {}
 }

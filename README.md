@@ -19,16 +19,15 @@ Fast and simple deployment MULETTER server.
 
 1) Download the repository
 
-2) Deploy on a **Openode.io FaaS serverless** and configure `./db` as the **storage area** or pre-configure the server for a classic cloud hosting, go to **Advanced server configuration**.
+2) Initialize the **API access keys** :
 
-# Connection to the Web API
+        npm run keys
 
-Initialize the **API access keys** :
+        Private Key : EsvLcQTcwflXbKk/1MSf3umI1gE=
+        Public Key : hc1x0Yp3KpwzURo5YO81mtl454U=
 
-    npm run init
 
-    Private Key : EsvLcQTcwflXbKk/1MSf3umI1gE=
-    Public Key : hc1x0Yp3KpwzURo5YO81mtl454U=
+3) Deploy on a **Openode.io FaaS serverless** and configure `./db` as the **storage area** or pre-configure the server for a classic cloud hosting, go to **Advanced server configuration**.
 
 
 ## Advanced server configuration
