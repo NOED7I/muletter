@@ -2,7 +2,7 @@
 
 const { MethodNotAllowedError, NotFoundError } = require('../utils/errors')
 
-module.exports = (req, callback = () => {}) => {
+module.exports = async (req, callback = () => {}) => {
   let route
   let parsedUrl = require('url').parse(req.url).pathname
   let methods
@@ -33,5 +33,6 @@ module.exports = (req, callback = () => {}) => {
     return callback(NotFoundError())
   }
 
-  callback(methods[req.method](req))
+  const data = await methods[req.method](req)
+  callback(data)
 }

@@ -21,19 +21,19 @@ const handleRequest = (req, res) => {
     // Body Parser : QueryString to Object
     req.body = require('querystring').parse(buffer.trim())
 
+    // CORS
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+
+    // Credentials access keys
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization')
+    res.setHeader('Access-Control-Allow-Credentials', true)
+
+    // REST Methods and JSON
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT')
+    res.setHeader('Content-Type', 'application/json')
+
     router(req, (data = {}) => {
-      // CORS
-      res.setHeader('Access-Control-Allow-Origin', '*')
-      res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-
-      // Credentials access keys
-      res.setHeader('Access-Control-Allow-Headers', 'Authorization')
-      res.setHeader('Access-Control-Allow-Credentials', true)
-
-      // REST Methods and JSON
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT')
-      res.setHeader('Content-Type', 'application/json')
-
       // Send statusCode if error
       if (data.constructor.name === 'ApiError') {
         res.writeHead(data.statusCode)

@@ -5,7 +5,7 @@ const db = require('../utils/db')
 
 const { PORT, HOST } = require('./main')
 
-const request = (method, path, body = {}) => new Promise((resolve, reject) => {
+const request = (method, path, body = {}, key = '') => new Promise((resolve, reject) => {
   const data = require('querystring').stringify(body)
   const options = {
     hostname: HOST || '127.0.0.1',
@@ -14,34 +14,34 @@ const request = (method, path, body = {}) => new Promise((resolve, reject) => {
     path,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(data)
+      'Content-Length': Buffer.byteLength(data),
+      'Authorization': `Basic ${key}`
     }
   }
+
   require('http').request(options, res => {
     let buffer = ''
     res.on('data', chunk => {
       buffer += chunk
     })
     res.on('end', () => {
-      if (res.statusCode === 200) {
-        resolve(buffer)
-      } else {
-        resolve(res)
-      }
+      resolve({ res, buffer })
     })
   }).end(data)
 })
 
+let data = {}
+
 test.before(async () => {
   const { createKeys } = require('../utils/helpers')
   await db.write('keys', createKeys())
-  await db.open()
+  data = await db.open()
 })
 
 test('POST /subscribers { email: email@provider.com } - should return a JSON response', async t => {
-  const res = await request('POST', '/subscribers', { email: 'email@provider.com' })
+  const { buffer } = await request('POST', '/subscribers', { email: 'email@provider.com' }, data.keys().private)
   try {
-    JSON.parse(res)
+    JSON.parse(buffer)
     t.pass()
   } catch (e) {
     t.fail(e)
@@ -49,7 +49,7 @@ test('POST /subscribers { email: email@provider.com } - should return a JSON res
 })
 
 test('UPDATE /add {} - should return Bad Request Error', async t => {
-  const res = await request('UPDATE', '/add')
+  const { res } = await request('UPDATE', '/add')
   t.is(res.statusCode, 400)
 })
 
