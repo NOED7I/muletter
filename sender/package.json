@@ -1,9 +1,10 @@
 {
-    "name": "sender",
-    "dependencies": {
-        "nodemailer": "^4.6.5"
-    },
-    "engines": {
-        "node": ">=10.2.1"
-    }
+  "name": "sender",
+  "version": "1.0.0",
+  "dependencies": {
+    "nodemailer": "^4.6.5"
+  },
+  "engines": {
+    "node": ">=10.2.1"
+  }
 }
