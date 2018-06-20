@@ -1,6 +1,6 @@
 {
   "name": "muletter",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -38,7 +38,6 @@
     "test-watch": "PORT=8080 ava -s --watch --color -v",
     "standard": "standard --fix --verbose **/*.js | snazzy",
     "precommit": "npm run standard && npm run test",
-    "postinstall": "cd sender; npm install",
     "keys": "node --no-warnings scripts/keys.js",
     "keys-update": "node --no-warnings scripts/keys.js --update"
   },

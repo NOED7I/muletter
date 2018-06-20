@@ -115,40 +115,6 @@ It will remove all existing emails and replace them with the emails parameter.
 **401** Unauthorized
 
 
-### BCC Sender
-
-**Request**
-
-      POST /sender
-
-**Headers**
-
-    Authorization Basic private-key
-
-**Parameters**
-
-    {
-      "service": "service-name",
-      "user": "smtp-user-email",
-      "password": "smtp-user-password", // used if token is not provided
-      "token": "oauth2-token": // OAuth 2 token
-      "body": "letter-body",
-      "test": "true | false" // used for tests
-    }
-
-**Return**
-
-    {
-      "data": {}
-    }
-
-**Errors**
-
-**409** Conflict
-
-**401** Unauthorized
-
-
 ### Get Status Infos
 
 **Request**
