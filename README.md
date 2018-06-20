@@ -15,19 +15,19 @@ Here are the minimal requirements of the server :
 
 ## Getting Start
 
-Fast and simple deployment MULETTER.
-
 1) Download the repository
 
-2) Initialize the **API access keys** :
+2) Deploy on a **Openode.io FaaS serverless** and configure `./db` as the **storage area** or pre-configure the server for a classic cloud hosting, go to **Advanced server configuration**.
+
+3) Initialize the **API access keys** :
 
         npm run keys
 
-        Private Key : EsvLcQTcwflXbKk/1MSf3umI1gE=
-        Public Key : hc1x0Yp3KpwzURo5YO81mtl454U=
+        PRIVATE_KEY : EsvLcQTcwflXbKk/1MSf3umI1gE=
+        PUBLIC_KEY : hc1x0Yp3KpwzURo5YO81mtl454U=
 
 
-3) Deploy on a **Openode.io FaaS serverless** and configure `./db` as the **storage area** or pre-configure the server for a classic cloud hosting, go to **Advanced server configuration**.
+4) Set PRIVATE_KEY, PUBLIC_KEY as environment variables on your instance and locally into `.env` file with the instance URL in order to use the commands `npm run export` and `npm run status`
 
 ## Advanced server configuration
 

@@ -1,19 +1,19 @@
 'use strict'
 
 const db = require('../utils/db')
-const { checkAuthKey } = require('../utils/helpers')
+const { checkAuthKey, getKeys } = require('../utils/helpers')
 const { UnauthorizedError } = require('../utils/errors')
 
 module.exports = {
-  GET: async (req) => {
-    const data = await db.open()
-    if (!checkAuthKey(req, data.keys(), 'private')) {
+  GET: async (req, name = 'subscribers') => {
+    const data = await db.open(name)
+    if (!checkAuthKey(req, getKeys(), 'private')) {
       return UnauthorizedError()
     }
 
     return {
       count: data.export().length,
-      keys: data.keys(),
+      keys: getKeys(),
       version: require('../package.json').version
     }
   }

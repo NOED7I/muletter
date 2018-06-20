@@ -1,13 +1,13 @@
 'use scrict'
 
-const { checkAuthKey, isEmail } = require('../utils/helpers')
-const { ConflictError, UnauthorizedError } = require('../utils/errors')
+const { checkAuthKey, isEmail, getKeys } = require('../utils/helpers')
+const { UnauthorizedError } = require('../utils/errors')
 const db = require('../utils/db')
 
 module.exports = {
-  POST: async (req) => {
-    const data = await db.open()
-    if (!checkAuthKey(req, data.keys(), 'public')) {
+  POST: async (req, name = 'subscribers') => {
+    const data = await db.open(name)
+    if (!checkAuthKey(req, getKeys(), 'public')) {
       return UnauthorizedError()
     }
 
@@ -21,9 +21,9 @@ module.exports = {
     return { data: email }
   },
 
-  DELETE: async (req) => {
-    const data = await db.open()
-    if (!checkAuthKey(req, data.keys(), 'public')) {
+  DELETE: async (req, name = 'subscribers') => {
+    const data = await db.open(name)
+    if (!checkAuthKey(req, getKeys(), 'public')) {
       return UnauthorizedError()
     }
 
@@ -38,24 +38,9 @@ module.exports = {
     return { data: email }
   },
 
-  PUT: async (req) => {
-    const data = await db.open()
-    if (!checkAuthKey(req, data.keys(), 'private')) {
-      return UnauthorizedError()
-    }
-
-    const { emails } = req.body
-    if (!emails) {
-      return ConflictError('Empty Data')
-    }
-
-    data.import(emails.split('\n'))
-    return { data: emails }
-  },
-
-  GET: async (req) => {
-    const data = await db.open()
-    if (!checkAuthKey(req, data.keys(), 'private')) {
+  GET: async (req, name = 'subscribers') => {
+    const data = await db.open(name)
+    if (!checkAuthKey(req, getKeys(), 'private')) {
       return UnauthorizedError()
     }
 

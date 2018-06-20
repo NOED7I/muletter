@@ -34,8 +34,14 @@ const createKeys = () => {
   return { private: privateKey, public: publicKey }
 }
 
+const getKeys = () => ({
+  private: process.env.PRIVATE_KEY,
+  public: process.env.PUBLIC_KEY
+})
+
 module.exports = {
   isEmail,
   checkAuthKey,
-  createKeys
+  createKeys,
+  getKeys
 }

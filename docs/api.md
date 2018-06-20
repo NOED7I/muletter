@@ -61,39 +61,6 @@
 **409** Wrong Email
 
 
-### Import mailing list
-
-It will remove all existing emails and replace them with the emails parameter.
-
-**Request**
-
-      PUT /subscribers
-
-**Headers**
-
-    Authorization Basic private-key
-
-**Parameters**
-
-    {
-      "import":  "user1@provider.io\nuser2@provider.io\nuser3@provider.io\n..."
-    }
-
-**Return**
-
-    {
-      "data":  "user1@provider.io\nuser2@provider.io\nuser3@provider.io\n..."
-    }
-
-**Errors**
-
-**401** Unauthorized
-
-**204** No Content
-
-**409** Wrong Cursor
-
-
 ### Export mailing list
 
 **Request**

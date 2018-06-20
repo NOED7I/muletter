@@ -1,6 +1,6 @@
 {
   "name": "muletter",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -27,19 +27,19 @@
   },
   "devDependencies": {
     "ava": "^1.0.0-beta.4",
+    "dotenv": "^6.0.0",
     "git-pre-commit": "^2.1.4",
     "snazzy": "^7.0.0",
     "standard": "^10.0.3"
   },
   "main": "server/main.js",
   "scripts": {
-    "start": "node server/main.js",
+    "start": "node --require dotenv/config server/main.js",
     "test": "PORT=8080 ava -s --color -v",
     "test-watch": "PORT=8080 ava -s --watch --color -v",
     "standard": "standard --fix --verbose **/*.js | snazzy",
     "precommit": "npm run standard && npm run test",
-    "keys": "node --no-warnings scripts/keys.js",
-    "keys-update": "node --no-warnings scripts/keys.js --update"
+    "keys": "node scripts/keys.js"
   },
   "dependencies": {}
 }

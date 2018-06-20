@@ -2,43 +2,35 @@
 
 const { writeFile, readFile, unlink } = require('fs').promises
 
-const path = (type) => require('path').resolve(__dirname, `./../db/${type}${process.env.NODE_ENV === 'test' ? '.test' : ''}.json`)
+const path = (name) => require('path').resolve(__dirname, `./../db/${name}.json`)
 
-const write = async (type, data) => {
+const write = async (name, data) => {
   try {
-    await writeFile(path(type), JSON.stringify(data))
+    await writeFile(path(name), JSON.stringify(data))
   } catch (e) {
     throw e
   }
 }
 
-const open = async () => {
-  // If keys not created the app will throw an error and exit
-  let keys = JSON.parse(await readFile(path('keys')))
-
+const open = async (name) => {
   let list = []
   try {
-    list = JSON.parse(await readFile(path('list')))
+    list = JSON.parse(await readFile(path(name)))
   } catch (e) {
-    await write('list', list)
+    await write(name, list)
   }
 
   return {
     add: (item) => {
       list.push(item)
-      write('list', list)
+      write(name, list)
     },
     del: (index) => {
       list.splice(index, 1)
-      write('list', list)
+      write(name, list)
     },
     indexOf: (item) => list.indexOf(item),
-    import: async (items) => {
-      list = items
-      write('list', list)
-    },
-    export: () => list,
-    keys: () => keys
+    export: () => list
   }
 }
 
@@ -46,8 +38,7 @@ module.exports = {
   open,
   write,
   path,
-  drop: async () => {
-    await unlink(path('list'))
-    await unlink(path('keys'))
+  drop: async (name) => {
+    await unlink(path(name))
   }
 }
