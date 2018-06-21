@@ -1,6 +1,6 @@
 {
   "name": "muletter",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "minimalist email list driven by a database-less Web API",
   "keywords": [
     "Node.js",
@@ -40,7 +40,8 @@
     "standard": "standard --fix --verbose **/*.js | snazzy",
     "precommit": "npm run standard && npm run test",
     "keys": "node scripts/keys.js",
-    "export": "node --require dotenv/config scripts/export.js"
+    "export": "node --require dotenv/config scripts/export.js",
+    "status": "node --require dotenv/config scripts/status.js"
   },
   "dependencies": {}
 }
