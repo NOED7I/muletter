@@ -82,7 +82,7 @@
 **401** Unauthorized
 
 
-### Get Status Infos
+### Get Status
 
 **Request**
 
@@ -107,6 +107,26 @@
 
 **Errors**
 
-**409** Conflict
+**401** Unauthorized
+
+### Get Infos
+
+**Request**
+
+      GET /infos
+
+**Headers**
+
+    Authorization Basic public-key
+
+**Return**
+
+    {
+      "data":  {
+          "banner": "banner-url"
+      }
+    }
+
+**Errors**
 
 **401** Unauthorized

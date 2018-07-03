@@ -29,6 +29,8 @@ Here are the minimal requirements of the server :
 
 4) Set PRIVATE_KEY, PUBLIC_KEY as environment variables on your instance and locally into `.env` file with the instance URL in order to use the commands `npm run export` and `npm run status`
 
+5) Optionally, you may want to set a BANNER_URL as environement variable on your instance that will be displayed above the muletter.io form
+
 ## Advanced server configuration
 
 HTTPS is activated by listening the port 443.
