@@ -34,7 +34,7 @@
   },
   "main": "server/main.js",
   "scripts": {
-    "start": "node --require dotenv/config server/main.js",
+    "start": "node server/main.js",
     "test": "PORT=8080 ava -s --color -v",
     "test-watch": "PORT=8080 ava -s --watch --color -v",
     "standard": "standard --fix --verbose **/*.js | snazzy",
